@@ -9,7 +9,7 @@ import data.GameData;
 import data.GameDataFile;
 import gui.Workspace;
 
-public class Main extends AppTemplate {
+public class Buzzword extends AppTemplate {
 
     public static void main(String[] args) {
         launch(args);
