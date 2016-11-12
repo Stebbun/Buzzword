@@ -8,11 +8,13 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
+import javafx.scene.shape.Circle;
 import propertymanager.PropertyManager;
 import ui.AppGUI;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import static Buzzword.BuzzwordProperties.*;
 
@@ -35,6 +37,7 @@ public class Workspace extends AppWorkspaceComponent {
     Button loginButton;
     VBox menuBox;
     Pane homeScreenPane;
+    GridPane letterNodeContainer;
     GridPane levelSelectPane;
     HBox headerPane;
     HBox fillerPane;
@@ -63,8 +66,8 @@ public class Workspace extends AppWorkspaceComponent {
     Label targetPointLabel;
     Label targetLabel;
     Button replayButton;
-    ArrayList<ArrayList<StackPane>> levelButtons;
-    ArrayList<ArrayList<StackPane>> letterNodes;
+    ArrayList<List<StackPane>> levelButtons;
+    ArrayList<List<StackPane>> letterNodes;
     Button profileButton;
 
     public Workspace(AppTemplate initApp) throws IOException {
@@ -104,7 +107,10 @@ public class Workspace extends AppWorkspaceComponent {
         categoryPane = new HBox(); //empty
         categoryPane.setMinHeight(50);
 
-        homeScreenPane = new Pane();
+        buildHomeGrid();
+
+
+        homeScreenPane = letterNodeContainer;
         homeScreenPane.setMinHeight(600);
         homeScreenPane.setMinWidth(600);
         homeScreenPane.getStyleClass().add("temp");
@@ -142,6 +148,37 @@ public class Workspace extends AppWorkspaceComponent {
 
         workspace = new StackPane();//bottom layer is application, top layer is login
         workspace.getChildren().add(baseHBox);
+    }
+
+    private void buildHomeGrid(){
+
+        letterNodes = new ArrayList<List<StackPane>>();
+        for(int i = 0; i < 4; i++) {
+            ArrayList<StackPane> stackArray = new ArrayList<StackPane>();
+            for(int j = 0; j < 4; j++){
+                StackPane letterNode = new StackPane();
+
+                Circle circle = new Circle(50);
+                circle.getStyleClass().add("circle");
+
+                Label letterLabel = new Label("A");
+                letterLabel.getStyleClass().add("letter-label");
+
+                letterNode.getChildren().addAll(circle, letterLabel);
+                stackArray.add(letterNode);
+            }
+            letterNodes.add(stackArray);
+        }
+
+        letterNodeContainer = new GridPane();
+
+        for(int i = 0; i < 4; i++){
+            for(int j = 0; j < 4; j++)
+                letterNodeContainer.add(letterNodes.get(i).get(j).getChildren().get(0), j, i);
+        }
+        letterNodeContainer.setHgap(40);
+        letterNodeContainer.setVgap(40);
+        letterNodeContainer.setPadding(new Insets(40, 40, 40, 40));
     }
 
     private void setupHandlers(){

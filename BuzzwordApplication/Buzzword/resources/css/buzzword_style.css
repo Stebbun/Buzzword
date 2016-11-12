@@ -29,7 +29,7 @@
 }
 
 .temp{
-    -fx-background-color: #000000;
+    -fx-background-color: #aaaaaa;
 }
 
 .menu-box{
@@ -37,4 +37,12 @@
             #cacdd1,
             #c0c1c4,
             linear-gradient(to right, #cacdd1 92%, #c0c1c4 8%);
+}
+
+.circle{
+    -fx-fill: #616263;
+}
+
+.letter-label{
+    -fx-text-fill: #eaecef
 }
