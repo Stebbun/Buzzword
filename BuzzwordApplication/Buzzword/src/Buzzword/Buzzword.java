@@ -9,6 +9,9 @@ import data.GameData;
 import data.GameDataFile;
 import gui.Workspace;
 
+/**
+ * @author Steven Li
+ */
 public class Buzzword extends AppTemplate {
 
     public static void main(String[] args) {

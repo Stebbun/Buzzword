@@ -1,0 +1,17 @@
+package Buzzword;
+
+/**
+ * Created by Stebbun on 11/11/2016.
+ */
+public enum BuzzwordProperties {
+    WORKSPACE_HEADING_LABEL,
+    ROOT_BORDERPANE_ID,
+    TOP_TOOLBAR_ID,
+    SEGMENTED_BUTTON_BAR,
+    FIRST_TOOLBAR_BUTTON,
+    LAST_TOOLBAR_BUTTON,
+    GAME_RESULT_TITLE,
+    GAME_WIN_MESSAGE,
+    GAME_LOSE_MESSAGE,
+    HEADING_LABEL;
+}
