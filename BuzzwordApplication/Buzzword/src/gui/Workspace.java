@@ -5,10 +5,13 @@ import components.AppWorkspaceComponent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
+import propertymanager.PropertyManager;
 import ui.AppGUI;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
+import static Buzzword.BuzzwordProperties.*;
 
 /**
  * @author Steven Li
@@ -63,15 +66,29 @@ public class Workspace extends AppWorkspaceComponent {
     }
 
     private void layoutGUI(){
+        PropertyManager propertyManager = PropertyManager.getManager();
 
-        createProfileButton = new Button("Create New Profile");
-        loginButton = new Button("Login");
+        createProfileButton = new Button(propertyManager.getPropertyValue(CREATE_PROFILE_BUTTON));
+        loginButton = new Button(propertyManager.getPropertyValue(LOGIN_BUTTON));
         menuBox = new VBox();
         menuBox.getChildren().addAll(createProfileButton, loginButton);
 
 
+        headingLabel = new Label(propertyManager.getPropertyValue(WORKSPACE_HEADING_LABEL));
+        exitLabel = new Label(propertyManager.getPropertyValue(EXIT_BUTTON));
+
+        headerPane = new HBox();
+        headerPane.getChildren().addAll(headingLabel, exitLabel);
+
+        categoryPane = new HBox(); //empty
+
+        
+        currentPane = new HBox();
+        currentPane.getChildren().addAll(homeScreenPane, hudPane);
+
         rightVBox = new VBox();
         rightVBox.getChildren().addAll(headerPane, categoryPane, currentPane);
+
 
         baseHBox = new HBox();
         baseHBox.getChildren().addAll(menuBox, rightVBox);

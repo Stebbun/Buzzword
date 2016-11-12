@@ -5,6 +5,9 @@ package Buzzword;
  */
 public enum BuzzwordProperties {
     WORKSPACE_HEADING_LABEL,
+    CREATE_PROFILE_BUTTON,
+    LOGIN_BUTTON,
+    EXIT_BUTTON,
     ROOT_BORDERPANE_ID,
     TOP_TOOLBAR_ID,
     SEGMENTED_BUTTON_BAR,

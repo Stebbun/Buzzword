@@ -20,11 +20,10 @@
         <property name="ROOT_BORDERPANE_ID" value="background"/>
         <property name="HEADING_LABEL" value="heading-label"/>
 
-        <!-- TOOLTIPS FOR BUTTONS -->
-        <property name="NEW_TOOLTIP" value="Start a new game"/>
-        <property name="LOAD_TOOLTIP" value="Load a saved game"/>
-        <property name="SAVE_TOOLTIP" value="Save game"/>
-        <property name="EXIT_TOOLTIP" value="Exit application"/>
+        <!-- TEXT FOR BUTTONS -->
+        <property name="CREATE_PROFILE_BUTTON" value="Create New Profile"/>
+        <property name="LOGIN_BUTTON" value="Login"/>
+        <property name="EXIT_BUTTON" value="X"/>
 
         <!-- ERROR MESSAGES -->
         <property name="CLOSE_BUTTON_TEXT" value="Close"/>
