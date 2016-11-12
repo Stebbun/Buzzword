@@ -32,6 +32,17 @@
     -fx-background-color: #aaaaaa;
 }
 
+.login-box{
+    -fx-background-color: rgba(0, 0, 0, 0.85);
+    -fx-background-radius: 10;
+}
+
+.login-label{
+    -fx-text-fill: #eaecef;
+    -fx-font-family: "Helvetica";
+    -fx-font-size: 30;
+}
+
 .menu-box{
         -fx-background-color:
             #cacdd1,

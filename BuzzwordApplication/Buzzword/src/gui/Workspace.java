@@ -7,6 +7,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
 import propertymanager.PropertyManager;
@@ -32,6 +33,8 @@ public class Workspace extends AppWorkspaceComponent {
     VBox rightVBox; // headerpane, categoryPane, currentPane
     Pane currentPane; // homeScreenPane/levelSelectPane/playPane, hudPane
 
+    GameState state;
+
 
     Button createProfileButton;
     Button loginButton;
@@ -48,6 +51,9 @@ public class Workspace extends AppWorkspaceComponent {
     VBox gameplayVBox;
     HBox outerGameHBox;
     HBox bottomHBox;
+
+    TextField loginField;
+    TextField passwordField;
 
     Label categoryLabel;
     HBox timePane;
@@ -74,6 +80,7 @@ public class Workspace extends AppWorkspaceComponent {
         app = initApp;
         gui = app.getGUI();
         layoutGUI();     // initialize all the workspace (GUI) components including the containers and their layout
+        logInPrompt();
         setupHandlers(); // ... and set up event handling
         activateWorkspace(gui.getAppPane());
     }
@@ -190,11 +197,61 @@ public class Workspace extends AppWorkspaceComponent {
 
     private void setupHandlers(){
         BuzzwordController controller = new BuzzwordController(app);
+        loginButton.setOnAction( e ->{
+
+        });
 
     }
 
     public void reinitialize(){
 
+        //clear certain panes beforehand
+
+        switch(state) {
+            case HOME_SCREEN:
+                layoutGUI();
+                break;
+            case HOME_SCREEN_LOG_PROMPT:
+                logInPrompt();
+                break;
+            case HOME_SCREEN_LOGGED:
+                break;
+            case LEVEL_SELECTION:
+                break;
+            case GAMEPLAY_SCREEN:
+                break;
+        }
+    }
+
+    private void logInPrompt(){
+        StackPane paneHolder = new StackPane();
+        paneHolder.setMinHeight(baseHBox.getHeight());
+        paneHolder.setMinHeight(baseHBox.getWidth());
+        workspace.getChildren().add(paneHolder);
+
+        GridPane loginPane = new GridPane();
+        paneHolder.getChildren().add(loginPane);
+        paneHolder.setPadding(new Insets(300, 300, 300, 300));
+
+        Label loginLabel = new Label("Profile Name ");
+        Label passwordLabel = new Label("Profile Password ");
+        loginPane.add(loginLabel, 0, 0);
+        loginPane.add(passwordLabel, 0, 1);
+
+        loginField = new TextField();
+        passwordField = new TextField();
+        loginPane.add(loginField, 1, 0);
+        loginPane.add(passwordField, 1, 1);
+
+        loginPane.setMinHeight(300);
+        loginPane.setMinWidth(600);
+        loginPane.setMaxHeight(300);
+        loginPane.setMaxWidth(600);
+        loginPane.getStyleClass().add("login-box");
+        loginPane.setAlignment(Pos.CENTER);
+
+        loginLabel.getStyleClass().add("login-label");
+        passwordLabel.getStyleClass().add("login-label");
     }
 
     @Override
