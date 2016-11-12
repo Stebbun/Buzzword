@@ -68,7 +68,7 @@ public class AppFileController implements FileController {
     }
 
     private void ensureActivatedWorkspace() {
-        appTemplate.getWorkspaceComponent().activateWorkspace(appTemplate.getGUI().getAppPane());
+
     }
 
     /**
