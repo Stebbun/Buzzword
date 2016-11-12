@@ -174,7 +174,7 @@ public class Workspace extends AppWorkspaceComponent {
 
         for(int i = 0; i < 4; i++){
             for(int j = 0; j < 4; j++)
-                letterNodeContainer.add(letterNodes.get(i).get(j).getChildren().get(0), j, i);
+                letterNodeContainer.add(letterNodes.get(i).get(j), j, i);
         }
         letterNodeContainer.setHgap(40);
         letterNodeContainer.setVgap(40);

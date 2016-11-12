@@ -44,5 +44,7 @@
 }
 
 .letter-label{
-    -fx-text-fill: #eaecef
+    -fx-text-fill: #eaecef;
+    -fx-font-family: "Comic Sans MS";
+    -fx-font-size: 16;
 }
