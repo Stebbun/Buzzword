@@ -101,9 +101,6 @@ public class Workspace extends AppWorkspaceComponent {
         HBox.setHgrow(blankLeftBox, Priority.ALWAYS);
         HBox.setHgrow(blankRightBox, Priority.ALWAYS);
 
-        fillerPane = new HBox(); //empty
-        fillerPane.setMinHeight(50);
-
         categoryPane = new HBox(); //empty
         categoryPane.setMinHeight(50);
 
@@ -138,7 +135,7 @@ public class Workspace extends AppWorkspaceComponent {
         bottomHBox.setMinHeight(100);
 
         rightVBox = new VBox();
-        rightVBox.getChildren().addAll(headerPane, fillerPane, categoryPane, outerGameHBox, bottomHBox);
+        rightVBox.getChildren().addAll(headerPane, categoryPane, outerGameHBox, bottomHBox);
 
 
         baseHBox = new HBox();
@@ -161,7 +158,7 @@ public class Workspace extends AppWorkspaceComponent {
                 Circle circle = new Circle(50);
                 circle.getStyleClass().add("circle");
 
-                Label letterLabel = new Label("A");
+                Label letterLabel = new Label();
                 letterLabel.getStyleClass().add("letter-label");
 
                 letterNode.getChildren().addAll(circle, letterLabel);
@@ -169,6 +166,15 @@ public class Workspace extends AppWorkspaceComponent {
             }
             letterNodes.add(stackArray);
         }
+
+        ((Label)letterNodes.get(0).get(0).getChildren().get(1)).setText("B");
+        ((Label)letterNodes.get(0).get(1).getChildren().get(1)).setText("U");
+        ((Label)letterNodes.get(1).get(0).getChildren().get(1)).setText("Z");
+        ((Label)letterNodes.get(1).get(1).getChildren().get(1)).setText("Z");
+        ((Label)letterNodes.get(2).get(2).getChildren().get(1)).setText("W");
+        ((Label)letterNodes.get(2).get(3).getChildren().get(1)).setText("O");
+        ((Label)letterNodes.get(3).get(2).getChildren().get(1)).setText("R");
+        ((Label)letterNodes.get(3).get(3).getChildren().get(1)).setText("D");
 
         letterNodeContainer = new GridPane();
 
@@ -179,6 +185,7 @@ public class Workspace extends AppWorkspaceComponent {
         letterNodeContainer.setHgap(40);
         letterNodeContainer.setVgap(40);
         letterNodeContainer.setPadding(new Insets(40, 40, 40, 40));
+
     }
 
     private void setupHandlers(){
