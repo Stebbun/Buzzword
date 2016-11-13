@@ -45,7 +45,7 @@ public class Workspace extends AppWorkspaceComponent {
     VBox menuBox;
     Pane homeScreenPane;
     GridPane letterNodeContainer;
-    GridPane levelSelectPane;
+    GridPane levelNodeContainer;
     HBox headerPane;
     HBox fillerPane;
     HBox categoryPane;
@@ -64,6 +64,7 @@ public class Workspace extends AppWorkspaceComponent {
     ComboBox<String> gameModesBox;
     ObservableList<String> gameModesBoxData = FXCollections.observableArrayList();
     Button startPlayingButton;
+    Button homeButton; //returns to homeLoggedScreen
 
     Label categoryLabel;
     HBox timePane;
@@ -82,7 +83,7 @@ public class Workspace extends AppWorkspaceComponent {
     Label targetPointLabel;
     Label targetLabel;
     Button replayButton;
-    ArrayList<List<StackPane>> levelButtons;
+    ArrayList<List<StackPane>> levelNodes;
     ArrayList<List<StackPane>> letterNodes;
 
 
@@ -91,8 +92,14 @@ public class Workspace extends AppWorkspaceComponent {
         gui = app.getGUI();
         layoutGUI();     // initialize all the workspace (GUI) components including the containers and their layout
         //logInPrompt();
+
         state = GameState.HOME_SCREEN_LOGGED;
         reinitialize();
+
+        state = GameState.LEVEL_SELECTION;
+        reinitialize();
+
+
         setupHandlers(); // ... and set up event handling
         activateWorkspace(gui.getAppPane());
     }
@@ -207,6 +214,49 @@ public class Workspace extends AppWorkspaceComponent {
 
     }
 
+    private void buildDemoLevelSelect(){
+
+        levelNodes = new ArrayList<List<StackPane>>();
+        for(int i = 0; i < 2; i++) {
+            ArrayList<StackPane> stackArray = new ArrayList<StackPane>();
+            for(int j = 0; j < 4; j++){
+                StackPane levelNode = new StackPane();
+
+                Circle circle = new Circle(50);
+                circle.getStyleClass().add("circle");
+
+                Label levelLabel = new Label();
+                levelLabel.getStyleClass().add("letter-label");
+
+                levelNode.getChildren().addAll(circle, levelLabel);
+                stackArray.add(levelNode);
+            }
+            levelNodes.add(stackArray);
+        }
+
+        //CHANGE LATER IN ACCORDANCE TO GAME DATA!!! *******
+        for(int i = 0; i < 2; i++)
+            for(int j = 0, k = 1; j < 4; j++, k++) {
+                ((Label) levelNodes.get(i).get(j).getChildren().get(1)).setText(Integer.toString(k));
+                //FAKE DATA
+                if(i == 0) {
+                    levelNodes.get(i).get(j).getChildren().get(0).getStyleClass().add("circle-enabled");
+                    levelNodes.get(i).get(j).getChildren().get(1).getStyleClass().add("letter-label-enabled");
+                }
+            }
+
+
+        levelNodeContainer = new GridPane();
+
+        for(int i = 0; i < 2; i++){
+            for(int j = 0; j < 4; j++)
+                levelNodeContainer.add(levelNodes.get(i).get(j), j, i);
+        }
+        levelNodeContainer.setHgap(40);
+        levelNodeContainer.setVgap(40);
+        levelNodeContainer.setPadding(new Insets(40, 40, 40, 40));
+    }
+
     private void setupHandlers(){
         controller = new BuzzwordController(app);
         loginButton.setOnAction( e ->{
@@ -238,10 +288,41 @@ public class Workspace extends AppWorkspaceComponent {
                 setUpHomeLogged();
                 break;
             case LEVEL_SELECTION:
+                setUpLevelSelection();
                 break;
             case GAMEPLAY_SCREEN:
+                setUpGameplayScreen();
                 break;
         }
+    }
+
+    private void setUpGameplayScreen() {
+        //menuBox
+        menuBox.getChildren().addAll(profileBox, homeButton);
+
+        
+    }
+
+    private void setUpLevelSelection() {
+        //menuBox
+        homeButton = new Button("Home");
+        menuBox.getChildren().addAll(profileBox, homeButton);
+
+        //curentPane
+        buildDemoLevelSelect();
+        homeScreenPane = levelNodeContainer;
+        currentPane.getChildren().add(homeScreenPane);
+
+        //categoryPane
+        categoryLabel = new Label(gameModesBox.getValue());
+        categoryLabel.getStyleClass().add("category-label");
+        HBox blankLeftBox = new HBox();
+        HBox.setHgrow(blankLeftBox, Priority.ALWAYS);
+        blankLeftBox.setMaxWidth(475);
+        HBox blankRightBox = new HBox();
+        HBox.setHgrow(blankRightBox, Priority.ALWAYS);
+
+        categoryPane.getChildren().addAll(blankLeftBox, categoryLabel, blankRightBox);
     }
 
     private void setUpHomeScreen(){
@@ -252,11 +333,11 @@ public class Workspace extends AppWorkspaceComponent {
         //menuBox
         profileBox = new ComboBox<String>();
         //REPLACE LATER!!!
-        profileBoxData.add("ProfileName");
+        profileBoxData.add("Steven");
         profileBoxData.add("Log out");
         profileBox.setItems(profileBoxData);
         //*****
-        profileBox.setValue("ProfileName");
+        profileBox.setValue("Steven");
 
         gameModesBox = new ComboBox<String>();
         //REPLACE LATER!!!
@@ -278,7 +359,7 @@ public class Workspace extends AppWorkspaceComponent {
 
         hudPane = new VBox();
         hudPane.setMinWidth(200);
-        
+
         currentPane.getChildren().add(homeScreenPane);
 
     }
