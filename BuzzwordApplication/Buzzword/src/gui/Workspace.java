@@ -11,6 +11,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
 import propertymanager.PropertyManager;
@@ -82,7 +84,7 @@ public class Workspace extends AppWorkspaceComponent {
     HBox wordPointLine;
     Label targetPointLabel;
     Label targetLabel;
-    Button replayButton;
+    Label replayLabel;
     ArrayList<List<StackPane>> levelNodes;
     ArrayList<List<StackPane>> letterNodes;
 
@@ -149,7 +151,7 @@ public class Workspace extends AppWorkspaceComponent {
 
 
         levelLabelPane = new HBox();
-        levelLabelPane.setMinHeight(100);
+        levelLabelPane.setMinHeight(50);
 
         gameplayVBox = new VBox();
         gameplayVBox.getChildren().addAll(currentPane, levelLabelPane);
@@ -309,7 +311,18 @@ public class Workspace extends AppWorkspaceComponent {
         blankLeftBox.setMaxWidth(475);
         HBox blankRightBox = new HBox();
         HBox.setHgrow(blankRightBox, Priority.ALWAYS);
-        categoryPane.getChildren().addAll(blankLeftBox, categoryLabel, blankRightBox);
+        blankRightBox.setMaxWidth(270);
+
+        remainingTimeLabel = new Label("Time Remaining: ");
+        remainingTimeLabel.getStyleClass().add("time-label");
+        currentTimeLabel = new Label("60 seconds");
+        currentTimeLabel.getStyleClass().add("time-label");
+        timePane = new HBox();
+        timePane.getChildren().addAll(remainingTimeLabel, currentTimeLabel);
+        timePane.getStyleClass().add("time-pane");
+        timePane.setPadding(new Insets(0, 10, 0, 10));
+        categoryPane.getChildren().addAll(blankLeftBox, categoryLabel, blankRightBox, timePane);
+        categoryPane.setPadding(new Insets(0, 50, 0, 0));
 
         //currentPane
         homeScreenPane = letterNodeContainer;
@@ -326,7 +339,20 @@ public class Workspace extends AppWorkspaceComponent {
         HBox.setHgrow(blankRightBox1, Priority.ALWAYS);
         levelLabelPane.getChildren().addAll(blankLeftBox1, levelLabel, blankRightBox1);
 
-        
+        //bottomHBox
+        replayLabel = new Label("");
+        Image image = new Image(this.getClass().getResourceAsStream("play.png"));
+        replayLabel.setGraphic(new ImageView(image));
+
+        HBox blankLeftBox2 = new HBox();
+        HBox.setHgrow(blankLeftBox2, Priority.ALWAYS);
+        blankLeftBox2.setMaxWidth(525);
+        HBox blankRightBox2 = new HBox();
+        HBox.setHgrow(blankRightBox2, Priority.ALWAYS);
+        bottomHBox.getChildren().addAll(blankLeftBox2, replayLabel, blankRightBox2);
+
+        //hudPane
+        hudPane.getChildren().addAll();
     }
 
     private void setUpLevelSelection() {

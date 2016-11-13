@@ -86,3 +86,14 @@
     -fx-text-fill: #fff600;
     -fx-opacity: 1;
 }
+
+.time-label{
+    -fx-font-size: 18pt;
+    -fx-font-family: "Segoe UI Light";
+    -fx-text-fill: #ff445d;
+}
+
+.time-pane{
+    -fx-background-color: rgba(0, 0, 0, 0.85);
+    -fx-background-radius: 10;
+}
