@@ -3,9 +3,12 @@ package gui;
 import apptemplate.AppTemplate;
 import components.AppWorkspaceComponent;
 import controller.BuzzwordController;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
@@ -26,6 +29,7 @@ public class Workspace extends AppWorkspaceComponent {
 
     AppTemplate app; // the actual application
     AppGUI gui; // the GUI inside which the application sits
+    BuzzwordController controller;
 
     Label headingLabel;   // workspace (GUI) heading label
 
@@ -55,6 +59,12 @@ public class Workspace extends AppWorkspaceComponent {
     TextField loginField;
     TextField passwordField;
 
+    ComboBox<String> profileBox;
+    ObservableList<String> profileBoxData = FXCollections.observableArrayList();
+    ComboBox<String> gameModesBox;
+    ObservableList<String> gameModesBoxData = FXCollections.observableArrayList();
+    Button startPlayingButton;
+
     Label categoryLabel;
     HBox timePane;
     Label remainingTimeLabel;
@@ -74,13 +84,15 @@ public class Workspace extends AppWorkspaceComponent {
     Button replayButton;
     ArrayList<List<StackPane>> levelButtons;
     ArrayList<List<StackPane>> letterNodes;
-    Button profileButton;
+
 
     public Workspace(AppTemplate initApp) throws IOException {
         app = initApp;
         gui = app.getGUI();
         layoutGUI();     // initialize all the workspace (GUI) components including the containers and their layout
-        logInPrompt();
+        //logInPrompt();
+        state = GameState.HOME_SCREEN_LOGGED;
+        reinitialize();
         setupHandlers(); // ... and set up event handling
         activateWorkspace(gui.getAppPane());
     }
@@ -196,7 +208,7 @@ public class Workspace extends AppWorkspaceComponent {
     }
 
     private void setupHandlers(){
-        BuzzwordController controller = new BuzzwordController(app);
+        controller = new BuzzwordController(app);
         loginButton.setOnAction( e ->{
 
         });
@@ -206,21 +218,54 @@ public class Workspace extends AppWorkspaceComponent {
     public void reinitialize(){
 
         //clear certain panes beforehand
+        menuBox.getChildren().clear();
+        categoryPane.getChildren().clear();
+        currentPane.getChildren().clear();
+        levelLabelPane.getChildren().clear();
+        bottomHBox.getChildren().clear();
+        hudPane.getChildren().clear();
+        //DO GAMEPLAY RELATED ONES LATER!!!
+
 
         switch(state) {
             case HOME_SCREEN:
-                layoutGUI();
+                setUpHomeScreen();
                 break;
             case HOME_SCREEN_LOG_PROMPT:
                 logInPrompt();
                 break;
             case HOME_SCREEN_LOGGED:
+                setUpHomeLogged();
                 break;
             case LEVEL_SELECTION:
                 break;
             case GAMEPLAY_SCREEN:
                 break;
         }
+    }
+
+    private void setUpHomeScreen(){
+
+    }
+
+    private void setUpHomeLogged(){
+        //menuBox
+        profileBox = new ComboBox<String>();
+        //REPLACE LATER!!!
+        profileBoxData.add("ProfileName");
+        profileBoxData.add("Log out");
+        profileBox.setItems(profileBoxData);
+        profileBox.setValue("ProfileName");
+
+        gameModesBox = new ComboBox<String>();
+        //REPLACE LATER!!!
+        gameModesBoxData.add("Famous People");
+        gameModesBoxData.add("Animals");
+        gameModesBox.setItems(gameModesBoxData);
+        gameModesBox.setValue("Select Mode");
+
+
+        menuBox.getChildren().addAll(profileBox, gameModesBox);
     }
 
     private void logInPrompt(){
