@@ -14,7 +14,7 @@
 .heading-label {
     -fx-font-size: 32pt;
     -fx-font-family: "Segoe UI Light";
-    -fx-text-fill: white;
+    -fx-text-fill: #000cff;
     -fx-opacity: 1;
 }
 
@@ -83,6 +83,6 @@
 .category-label{
     -fx-font-size: 20pt;
     -fx-font-family: "Segoe UI Light";
-    -fx-text-fill: white;
+    -fx-text-fill: #fff600;
     -fx-opacity: 1;
 }

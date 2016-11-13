@@ -99,6 +99,9 @@ public class Workspace extends AppWorkspaceComponent {
         state = GameState.LEVEL_SELECTION;
         reinitialize();
 
+        state = GameState.GAMEPLAY_SCREEN;
+        reinitialize();
+
 
         setupHandlers(); // ... and set up event handling
         activateWorkspace(gui.getAppPane());
@@ -299,6 +302,29 @@ public class Workspace extends AppWorkspaceComponent {
     private void setUpGameplayScreen() {
         //menuBox
         menuBox.getChildren().addAll(profileBox, homeButton);
+
+        //categoryPane
+        HBox blankLeftBox = new HBox();
+        HBox.setHgrow(blankLeftBox, Priority.ALWAYS);
+        blankLeftBox.setMaxWidth(475);
+        HBox blankRightBox = new HBox();
+        HBox.setHgrow(blankRightBox, Priority.ALWAYS);
+        categoryPane.getChildren().addAll(blankLeftBox, categoryLabel, blankRightBox);
+
+        //currentPane
+        homeScreenPane = letterNodeContainer;
+        currentPane.getChildren().add(homeScreenPane);
+
+        //levelLabelPane
+        levelLabel = new Label("Level 1");
+        levelLabel.getStyleClass().add("category-label");
+
+        HBox blankLeftBox1 = new HBox();
+        HBox.setHgrow(blankLeftBox1, Priority.ALWAYS);
+        blankLeftBox.setMaxWidth(475);
+        HBox blankRightBox1 = new HBox();
+        HBox.setHgrow(blankRightBox1, Priority.ALWAYS);
+        levelLabelPane.getChildren().addAll(blankLeftBox1, levelLabel, blankRightBox1);
 
         
     }
