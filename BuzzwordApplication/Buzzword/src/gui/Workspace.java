@@ -270,6 +270,16 @@ public class Workspace extends AppWorkspaceComponent {
 
         menuBox.getChildren().addAll(profileBox, gameModesBox, startPlayingButton);
 
+        //currentPane
+        homeScreenPane = letterNodeContainer;
+        homeScreenPane.setMinHeight(600);
+        homeScreenPane.setMinWidth(600);
+        homeScreenPane.getStyleClass().add("temp");
+
+        hudPane = new VBox();
+        hudPane.setMinWidth(200);
+        
+        currentPane.getChildren().add(homeScreenPane);
 
     }
 
