@@ -94,6 +94,49 @@
 }
 
 .time-pane{
-    -fx-background-color: rgba(0, 0, 0, 0.85);
+    -fx-background-color: rgba(229, 229, 229, 100);
+    -fx-background-radius: 10;
+}
+
+.guess-label{
+    -fx-font-size: 20pt;
+    -fx-font-family: "Segoe UI Light";
+    -fx-text-fill: #ffffff;
+}
+
+.guess-pane{
+    -fx-background-color: #616263;
+    -fx-background-radius: 10;
+}
+
+.words{
+    -fx-font-size: 18pt;
+    -fx-font-family: "Segoe UI Light";
+    -fx-text-fill: #ffffff;
+}
+
+.words-pane{
+    -fx-background-color: #616263;
+}
+
+.total{
+    -fx-font-size: 18pt;
+    -fx-font-family: "Segoe UI Light";
+    -fx-text-fill: #ffffff;
+}
+
+.total-pane{
+    -fx-background-color: #616263;
+    -fx-background-radius: 10;
+}
+
+.target{
+    -fx-font-size: 18pt;
+    -fx-font-family: "Segoe UI Light";
+    -fx-text-fill: #ffffff;
+}
+
+.target-pane{
+    -fx-background-color: #616263;
     -fx-background-radius: 10;
 }

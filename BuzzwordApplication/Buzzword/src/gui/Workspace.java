@@ -7,14 +7,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import propertymanager.PropertyManager;
 import ui.AppGUI;
 
@@ -68,6 +66,8 @@ public class Workspace extends AppWorkspaceComponent {
     Button startPlayingButton;
     Button homeButton; //returns to homeLoggedScreen
 
+    Pane linePane;
+
     Label categoryLabel;
     HBox timePane;
     Label remainingTimeLabel;
@@ -76,8 +76,12 @@ public class Workspace extends AppWorkspaceComponent {
     BorderPane appPane;
     VBox hudPane; //
     Label currentGuessLabel;
+    HBox currentGuessBox;
+    ScrollPane wordScrollPane;
+    GridPane wordGrid;
     VBox scorePane;
-    HBox totalScoreBox;
+    GridPane totalScoreBox;
+    VBox targetBox;
     Label totalLabel;
     Label totalScoreLabel;
     VBox wordPointVBox;
@@ -93,16 +97,17 @@ public class Workspace extends AppWorkspaceComponent {
         app = initApp;
         gui = app.getGUI();
         layoutGUI();     // initialize all the workspace (GUI) components including the containers and their layout
+
         //logInPrompt();
 
-        state = GameState.HOME_SCREEN_LOGGED;
-        reinitialize();
+        //state = GameState.HOME_SCREEN_LOGGED;
+        //reinitialize();
 
-        state = GameState.LEVEL_SELECTION;
-        reinitialize();
+        //state = GameState.LEVEL_SELECTION;
+        //reinitialize();
 
-        state = GameState.GAMEPLAY_SCREEN;
-        reinitialize();
+        //state = GameState.GAMEPLAY_SCREEN;
+        //reinitialize();
 
 
         setupHandlers(); // ... and set up event handling
@@ -125,7 +130,7 @@ public class Workspace extends AppWorkspaceComponent {
         exitLabel = new Label(propertyManager.getPropertyValue(EXIT_BUTTON));
 
         HBox blankLeftBox = new HBox();
-        blankLeftBox.setMaxWidth(450);
+        blankLeftBox.setMaxWidth(410);
         HBox blankRightBox = new HBox();
         headerPane = new HBox();
         headerPane.getChildren().addAll(blankLeftBox, headingLabel, blankRightBox, exitLabel);
@@ -136,7 +141,7 @@ public class Workspace extends AppWorkspaceComponent {
         categoryPane.setMinHeight(50);
 
         buildHomeGrid();
-
+        drawLines();
 
         homeScreenPane = letterNodeContainer;
         homeScreenPane.setMinHeight(600);
@@ -158,9 +163,12 @@ public class Workspace extends AppWorkspaceComponent {
 
 
         VBox blankLeftBox2 = new VBox();
-        blankLeftBox2.setMinWidth(250);
+        blankLeftBox2.setMinWidth(200);
+        VBox blankityBox = new VBox();
+        blankityBox.setMinWidth(75);
+
         outerGameHBox = new HBox();
-        outerGameHBox.getChildren().addAll(blankLeftBox2, gameplayVBox, hudPane);
+        outerGameHBox.getChildren().addAll(blankLeftBox2, gameplayVBox, blankityBox, hudPane);
 
         bottomHBox = new HBox();
         bottomHBox.setMinHeight(100);
@@ -217,6 +225,40 @@ public class Workspace extends AppWorkspaceComponent {
         letterNodeContainer.setVgap(40);
         letterNodeContainer.setPadding(new Insets(40, 40, 40, 40));
 
+    }
+
+    private void drawLines(){
+
+        linePane = new Pane();
+        linePane.setPickOnBounds(false);
+        linePane.setMinHeight(600);
+        linePane.setMinWidth(600);
+
+        ArrayList<Line> lineArrayList = new ArrayList<Line>();
+        for(int i = 0; i < 42; i++)
+            lineArrayList.add(new Line());
+
+        int lineCounter = 0;
+        //draw horizontal
+        for(int i = 0; i < 4; i++)
+            for(int j = 0; j < 3; j++, lineCounter++){
+                lineArrayList.get(lineCounter).setStartX(140 + (j*140));
+                lineArrayList.get(lineCounter).setStartY(90 + (i*140));
+                lineArrayList.get(lineCounter).setEndX(180 + (j*140));
+                lineArrayList.get(lineCounter).setEndY(90 + (i*140));
+            }
+        //draw vertical
+        for(int j = 0; j < 3; j++)
+            for(int i = 0; i < 4; i++, lineCounter++){
+                lineArrayList.get(lineCounter).setStartX(90 + (i*140));
+                lineArrayList.get(lineCounter).setStartY(140 + (j*140));
+                lineArrayList.get(lineCounter).setEndX(90 + (i*140));
+                lineArrayList.get(lineCounter).setEndY(180 + (j*140));
+            }
+
+
+        for(int i = 0; i < lineArrayList.size(); i++)
+            linePane.getChildren().add(lineArrayList.get(i));
     }
 
     private void buildDemoLevelSelect(){
@@ -308,7 +350,7 @@ public class Workspace extends AppWorkspaceComponent {
         //categoryPane
         HBox blankLeftBox = new HBox();
         HBox.setHgrow(blankLeftBox, Priority.ALWAYS);
-        blankLeftBox.setMaxWidth(475);
+        blankLeftBox.setMaxWidth(435);
         HBox blankRightBox = new HBox();
         HBox.setHgrow(blankRightBox, Priority.ALWAYS);
         blankRightBox.setMaxWidth(270);
@@ -334,7 +376,7 @@ public class Workspace extends AppWorkspaceComponent {
 
         HBox blankLeftBox1 = new HBox();
         HBox.setHgrow(blankLeftBox1, Priority.ALWAYS);
-        blankLeftBox.setMaxWidth(475);
+        blankLeftBox1.setMaxWidth(340);
         HBox blankRightBox1 = new HBox();
         HBox.setHgrow(blankRightBox1, Priority.ALWAYS);
         levelLabelPane.getChildren().addAll(blankLeftBox1, levelLabel, blankRightBox1);
@@ -346,13 +388,71 @@ public class Workspace extends AppWorkspaceComponent {
 
         HBox blankLeftBox2 = new HBox();
         HBox.setHgrow(blankLeftBox2, Priority.ALWAYS);
-        blankLeftBox2.setMaxWidth(525);
+        blankLeftBox2.setMaxWidth(470);
         HBox blankRightBox2 = new HBox();
         HBox.setHgrow(blankRightBox2, Priority.ALWAYS);
         bottomHBox.getChildren().addAll(blankLeftBox2, replayLabel, blankRightBox2);
 
         //hudPane
-        hudPane.getChildren().addAll();
+        currentGuessLabel = new Label("B U");
+        currentGuessLabel.getStyleClass().add("guess-label");
+        currentGuessBox = new HBox();
+        currentGuessBox.getChildren().add(currentGuessLabel);
+        currentGuessBox.getStyleClass().add("guess-pane");
+
+        wordGrid = new GridPane();
+        wordGrid.getStyleClass().add("words-pane");
+        wordGrid.getColumnConstraints().add(new ColumnConstraints(200));
+        wordGrid.getColumnConstraints().add(new ColumnConstraints(50));
+        ArrayList<String> words = new ArrayList<>();
+        words.add("WAR");
+        words.add("RAW");
+        words.add("DRAW");
+        ArrayList<String> points = new ArrayList<>();
+        points.add("10");
+        points.add("10");
+        points.add("20");
+        for(int i = 0; i < 3; i++) {
+            wordGrid.add(new Label(words.get(i)), 0, i);
+            wordGrid.add(new Label(points.get(i)), 1, i);
+        }
+        for(int i = 3; i < 7; i++)
+            wordGrid.add(new Label(""), 0, i);
+
+        for(int i = 0; i < 6; i++){
+            wordGrid.getChildren().get(i).getStyleClass().add("words");
+        }
+        wordScrollPane = new ScrollPane();
+        wordScrollPane.setContent(wordGrid);
+        wordScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+
+        totalScoreBox = new GridPane();
+        totalScoreBox.getStyleClass().add("total-pane");
+        totalScoreBox.getColumnConstraints().add(new ColumnConstraints(200));
+        totalScoreBox.getColumnConstraints().add(new ColumnConstraints(50));
+        totalScoreBox.add(new Label("TOTAL"), 0, 0);
+        totalScoreBox.add(new Label("40"), 1, 0);
+        for(int i = 0; i < 2; i++){
+            totalScoreBox.getChildren().get(i).getStyleClass().add("total");
+        }
+
+        HBox fillerPane = new HBox();
+        fillerPane.setMinHeight(30);
+        HBox filler1Pane = new HBox();
+        filler1Pane.setMinHeight(30);
+
+        targetBox = new VBox();
+        targetBox.getStyleClass().add("target-pane");
+        targetBox.getChildren().add(new Label("Target"));
+        targetBox.getChildren().add(new Label("75 Points"));
+        targetBox.getChildren().get(0).getStyleClass().add("target");
+        targetBox.getChildren().get(1).getStyleClass().add("target");
+
+        hudPane.getChildren().addAll(currentGuessBox, fillerPane, wordScrollPane, totalScoreBox, filler1Pane, targetBox);
+        hudPane.setPadding(new Insets(30, 0, 0, 0));
+
+        //draw lines
+        currentPane.getChildren().add(linePane);
     }
 
     private void setUpLevelSelection() {
@@ -370,7 +470,7 @@ public class Workspace extends AppWorkspaceComponent {
         categoryLabel.getStyleClass().add("category-label");
         HBox blankLeftBox = new HBox();
         HBox.setHgrow(blankLeftBox, Priority.ALWAYS);
-        blankLeftBox.setMaxWidth(475);
+        blankLeftBox.setMaxWidth(430);
         HBox blankRightBox = new HBox();
         HBox.setHgrow(blankRightBox, Priority.ALWAYS);
 
@@ -408,9 +508,6 @@ public class Workspace extends AppWorkspaceComponent {
         homeScreenPane.setMinHeight(600);
         homeScreenPane.setMinWidth(600);
         homeScreenPane.getStyleClass().add("temp");
-
-        hudPane = new VBox();
-        hudPane.setMinWidth(200);
 
         currentPane.getChildren().add(homeScreenPane);
 
