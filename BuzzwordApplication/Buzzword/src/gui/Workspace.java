@@ -255,6 +255,7 @@ public class Workspace extends AppWorkspaceComponent {
         profileBoxData.add("ProfileName");
         profileBoxData.add("Log out");
         profileBox.setItems(profileBoxData);
+        //*****
         profileBox.setValue("ProfileName");
 
         gameModesBox = new ComboBox<String>();
@@ -262,10 +263,14 @@ public class Workspace extends AppWorkspaceComponent {
         gameModesBoxData.add("Famous People");
         gameModesBoxData.add("Animals");
         gameModesBox.setItems(gameModesBoxData);
+        //*****
         gameModesBox.setValue("Select Mode");
 
+        startPlayingButton = new Button("Start Playing");
 
-        menuBox.getChildren().addAll(profileBox, gameModesBox);
+        menuBox.getChildren().addAll(profileBox, gameModesBox, startPlayingButton);
+
+
     }
 
     private void logInPrompt(){
