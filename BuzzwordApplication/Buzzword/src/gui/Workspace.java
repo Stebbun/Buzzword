@@ -35,7 +35,7 @@ public class Workspace extends AppWorkspaceComponent {
 
     HBox baseHBox; //left is menuBox, right is rest of the gui
     VBox rightVBox; // headerpane, categoryPane, currentPane
-    Pane currentPane; // homeScreenPane/levelSelectPane/playPane, hudPane
+    StackPane currentPane; // homeScreenPane/levelSelectPane/playPane, hudPane
 
     GameState state;
 
@@ -92,11 +92,24 @@ public class Workspace extends AppWorkspaceComponent {
     ArrayList<List<StackPane>> levelNodes;
     ArrayList<List<StackPane>> letterNodes;
 
+    ArrayList<GameState> stateArray;
+    int stateIndex;
 
     public Workspace(AppTemplate initApp) throws IOException {
         app = initApp;
         gui = app.getGUI();
         layoutGUI();     // initialize all the workspace (GUI) components including the containers and their layout
+
+        stateArray = new ArrayList<GameState>();
+        stateArray.add(GameState.HOME_SCREEN_LOG_PROMPT);
+        stateArray.add(GameState.HOME_SCREEN_LOGGED);
+        stateArray.add(GameState.LEVEL_SELECTION);
+        stateArray.add(GameState.GAMEPLAY_SCREEN);
+        gui.getPrimaryScene().setOnMouseClicked(e -> {
+            state = stateArray.get(stateIndex);
+            reinitialize();
+            stateIndex++;
+        });
 
         //logInPrompt();
 
@@ -321,6 +334,7 @@ public class Workspace extends AppWorkspaceComponent {
         levelLabelPane.getChildren().clear();
         bottomHBox.getChildren().clear();
         hudPane.getChildren().clear();
+        workspace.getChildren().clear();
         //DO GAMEPLAY RELATED ONES LATER!!!
 
 
@@ -344,6 +358,7 @@ public class Workspace extends AppWorkspaceComponent {
     }
 
     private void setUpGameplayScreen() {
+        workspace.getChildren().add(baseHBox);
         //menuBox
         menuBox.getChildren().addAll(profileBox, homeButton);
 
@@ -456,6 +471,7 @@ public class Workspace extends AppWorkspaceComponent {
     }
 
     private void setUpLevelSelection() {
+        workspace.getChildren().add(baseHBox);
         //menuBox
         homeButton = new Button("Home");
         menuBox.getChildren().addAll(profileBox, homeButton);
@@ -478,10 +494,11 @@ public class Workspace extends AppWorkspaceComponent {
     }
 
     private void setUpHomeScreen(){
-
+        workspace.getChildren().add(baseHBox);
     }
 
     private void setUpHomeLogged(){
+        workspace.getChildren().add(baseHBox);
         //menuBox
         profileBox = new ComboBox<String>();
         //REPLACE LATER!!!
@@ -495,6 +512,7 @@ public class Workspace extends AppWorkspaceComponent {
         //REPLACE LATER!!!
         gameModesBoxData.add("Famous People");
         gameModesBoxData.add("Animals");
+        gameModesBoxData.add("Fruits");
         gameModesBox.setItems(gameModesBoxData);
         //*****
         gameModesBox.setValue("Select Mode");
@@ -514,9 +532,18 @@ public class Workspace extends AppWorkspaceComponent {
     }
 
     private void logInPrompt(){
+        PropertyManager propertyManager = PropertyManager.getManager();
+        workspace.getChildren().add(baseHBox);
+
+        //menuBox
+        menuBox.getChildren().addAll(createProfileButton, loginButton);
+
+        //currentPane
+        currentPane.getChildren().add(homeScreenPane);
+
         StackPane paneHolder = new StackPane();
         paneHolder.setMinHeight(baseHBox.getHeight());
-        paneHolder.setMinHeight(baseHBox.getWidth());
+        paneHolder.setMinWidth(baseHBox.getWidth());
         workspace.getChildren().add(paneHolder);
 
         GridPane loginPane = new GridPane();
@@ -537,24 +564,24 @@ public class Workspace extends AppWorkspaceComponent {
         loginPane.setMinWidth(600);
         loginPane.setMaxHeight(300);
         loginPane.setMaxWidth(600);
-        loginPane.getStyleClass().add("login-box");
+        loginPane.getStyleClass().add(propertyManager.getPropertyValue(LOGIN_BOX));
         loginPane.setAlignment(Pos.CENTER);
 
-        loginLabel.getStyleClass().add("login-label");
-        passwordLabel.getStyleClass().add("login-label");
+        loginLabel.getStyleClass().add(propertyManager.getPropertyValue(LOGIN_LABEL));
+        passwordLabel.getStyleClass().add(propertyManager.getPropertyValue(LOGIN_LABEL));
     }
 
     @Override
     public void initStyle() {
         PropertyManager propertyManager = PropertyManager.getManager();
 
-        rightVBox.getStyleClass().add("right-gray");
+        rightVBox.getStyleClass().add(propertyManager.getPropertyValue(RIGHT_GRAY));
 
-        headingLabel.getStyleClass().add("heading-label");
+        headingLabel.getStyleClass().add(propertyManager.getPropertyValue(HEADING_LABEL));
 
-        exitLabel.getStyleClass().add("exit-label");
+        exitLabel.getStyleClass().add(propertyManager.getPropertyValue(EXIT_LABEL));
 
-        menuBox.getStyleClass().add("menu-box");
+        menuBox.getStyleClass().add(propertyManager.getPropertyValue(MENU_BOX));
     }
 
     @Override

@@ -16,5 +16,10 @@ public enum BuzzwordProperties {
     GAME_RESULT_TITLE,
     GAME_WIN_MESSAGE,
     GAME_LOSE_MESSAGE,
-    HEADING_LABEL;
+    LOGIN_BOX,
+    LOGIN_LABEL,
+    RIGHT_GRAY,
+    MENU_BOX,
+    HEADING_LABEL,
+    EXIT_LABEL;
 }

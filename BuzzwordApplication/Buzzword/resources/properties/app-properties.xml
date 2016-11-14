@@ -19,6 +19,11 @@
         <!-- WORKSPACE CSS PROPERTIES -->
         <property name="ROOT_BORDERPANE_ID" value="background"/>
         <property name="HEADING_LABEL" value="heading-label"/>
+        <property name="EXIT_LABEL" value="exit-label"/>
+        <property name="MENU_BOX" value="menu-box"/>
+        <property name="RIGHT_GRAY" value="right-gray"/>
+        <property name="LOGIN_LABEL" value="login-label"/>
+        <property name="LOGIN_BOX" value="login-box"/>
 
         <!-- TEXT FOR BUTTONS -->
         <property name="CREATE_PROFILE_BUTTON" value="Create New Profile"/>
