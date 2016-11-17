@@ -295,8 +295,8 @@ public class Workspace extends AppWorkspaceComponent {
         }
 
         //CHANGE LATER IN ACCORDANCE TO GAME DATA!!! *******
-        for(int i = 0; i < 2; i++)
-            for(int j = 0, k = 1; j < 4; j++, k++) {
+        for(int i = 0, k = 1; i < 2; i++)
+            for(int j = 0; j < 4; j++, k++) {
                 ((Label) levelNodes.get(i).get(j).getChildren().get(1)).setText(Integer.toString(k));
                 //FAKE DATA
                 if(i == 0) {
