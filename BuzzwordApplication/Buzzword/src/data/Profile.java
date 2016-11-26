@@ -1,9 +1,6 @@
 package data;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,15 +17,18 @@ public class Profile {
 
     }
 
-    public Profile(String username, String password, ArrayList<GameMode> gameModes){
+    public Profile(String username, String password){
+        this.username = username;
+        this.password = password;
         generateInitData();
     }
 
     private void generateInitData() {
         //Generate Animals game mode
-        ArrayList<Level> animalLevels = new ArrayList<>();
         try {
-            BufferedReader br = new BufferedReader(new FileReader(Profile.class.getResource("/initialData/animals.txt").getFile()));
+            ArrayList<Level> animalLevels = new ArrayList<>();
+            InputStream is = Profile.class.getResourceAsStream("/initialdata/animals.txt");
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
             String words = br.readLine();
             String[] wordArray = words.split(" ");
             Set<String> wordSet = new HashSet<>();
@@ -44,9 +44,12 @@ public class Profile {
 
 
                 Level level = new Level(false, wordSet, targetScore);
+                wordSet.clear();
+                animalLevels.add(level);
             }
 
             GameMode animals = new GameMode("Animals", animalLevels, 0);
+            gameModes.add(animals);
 
         } catch (Exception e) {
             e.printStackTrace();

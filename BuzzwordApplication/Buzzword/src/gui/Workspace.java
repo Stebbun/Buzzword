@@ -38,6 +38,7 @@ public class Workspace extends AppWorkspaceComponent {
     StackPane currentPane; // homeScreenPane/levelSelectPane/playPane, hudPane
 
     GameState state;
+    Button lastButtonClicked;
 
 
     Button createProfileButton;
@@ -58,6 +59,7 @@ public class Workspace extends AppWorkspaceComponent {
 
     TextField loginField;
     TextField passwordField;
+    GridPane loginPane = new GridPane();
 
     ChoiceBox<String> profileBox;
     ObservableList<String> profileBoxData = FXCollections.observableArrayList();
@@ -100,6 +102,7 @@ public class Workspace extends AppWorkspaceComponent {
         app = initApp;
         gui = app.getGUI();
         layoutGUI();     // initialize all the workspace (GUI) components including the containers and their layout
+        state = GameState.HOME_SCREEN;
 
         //for viewing purposes only
        /* stateArray = new ArrayList<GameState>();
@@ -319,10 +322,30 @@ public class Workspace extends AppWorkspaceComponent {
         levelNodeContainer.setPadding(new Insets(40, 40, 40, 40));
     }
 
+    public GameState getState() {
+        return state;
+    }
+
+    public void setState(GameState state) {
+        this.state = state;
+    }
+
     private void setupHandlers(){
         controller = new BuzzwordController(app);
         loginButton.setOnAction( e ->{
 
+        });
+
+        createProfileButton.setOnAction(e ->{
+            controller.createProfilePrompt();
+        });
+
+        loginPane.setOnKeyPressed(e ->{
+            if(lastButtonClicked.equals(createProfileButton)){
+                controller.createProfile();
+            }else{
+                controller.handleLoginAttempt();
+            }
         });
 
     }
@@ -552,7 +575,6 @@ public class Workspace extends AppWorkspaceComponent {
         paneHolder.setMinWidth(baseHBox.getWidth());
         workspace.getChildren().add(paneHolder);
 
-        GridPane loginPane = new GridPane();
         paneHolder.getChildren().add(loginPane);
         paneHolder.setPadding(new Insets(300, 300, 300, 300));
 
@@ -593,5 +615,469 @@ public class Workspace extends AppWorkspaceComponent {
     @Override
     public void reloadWorkspace() {
 
+    }
+
+    public GridPane getLoginPane() {
+        return loginPane;
+    }
+
+    public void setLoginPane(GridPane loginPane) {
+        this.loginPane = loginPane;
+    }
+
+    public Button getLastButtonClicked() {
+        return lastButtonClicked;
+    }
+
+    public void setLastButtonClicked(Button lastButtonClicked) {
+        this.lastButtonClicked = lastButtonClicked;
+    }
+
+    public AppTemplate getApp() {
+        return app;
+    }
+
+    public void setApp(AppTemplate app) {
+        this.app = app;
+    }
+
+    public AppGUI getGui() {
+        return gui;
+    }
+
+    public void setGui(AppGUI gui) {
+        this.gui = gui;
+    }
+
+    public BuzzwordController getController() {
+        return controller;
+    }
+
+    public void setController(BuzzwordController controller) {
+        this.controller = controller;
+    }
+
+    public Label getHeadingLabel() {
+        return headingLabel;
+    }
+
+    public void setHeadingLabel(Label headingLabel) {
+        this.headingLabel = headingLabel;
+    }
+
+    public HBox getBaseHBox() {
+        return baseHBox;
+    }
+
+    public void setBaseHBox(HBox baseHBox) {
+        this.baseHBox = baseHBox;
+    }
+
+    public VBox getRightVBox() {
+        return rightVBox;
+    }
+
+    public void setRightVBox(VBox rightVBox) {
+        this.rightVBox = rightVBox;
+    }
+
+    public StackPane getCurrentPane() {
+        return currentPane;
+    }
+
+    public void setCurrentPane(StackPane currentPane) {
+        this.currentPane = currentPane;
+    }
+
+    public Button getCreateProfileButton() {
+        return createProfileButton;
+    }
+
+    public void setCreateProfileButton(Button createProfileButton) {
+        this.createProfileButton = createProfileButton;
+    }
+
+    public Button getLoginButton() {
+        return loginButton;
+    }
+
+    public void setLoginButton(Button loginButton) {
+        this.loginButton = loginButton;
+    }
+
+    public VBox getMenuBox() {
+        return menuBox;
+    }
+
+    public void setMenuBox(VBox menuBox) {
+        this.menuBox = menuBox;
+    }
+
+    public Pane getHomeScreenPane() {
+        return homeScreenPane;
+    }
+
+    public void setHomeScreenPane(Pane homeScreenPane) {
+        this.homeScreenPane = homeScreenPane;
+    }
+
+    public GridPane getLetterNodeContainer() {
+        return letterNodeContainer;
+    }
+
+    public void setLetterNodeContainer(GridPane letterNodeContainer) {
+        this.letterNodeContainer = letterNodeContainer;
+    }
+
+    public GridPane getLevelNodeContainer() {
+        return levelNodeContainer;
+    }
+
+    public void setLevelNodeContainer(GridPane levelNodeContainer) {
+        this.levelNodeContainer = levelNodeContainer;
+    }
+
+    public HBox getHeaderPane() {
+        return headerPane;
+    }
+
+    public void setHeaderPane(HBox headerPane) {
+        this.headerPane = headerPane;
+    }
+
+    public HBox getFillerPane() {
+        return fillerPane;
+    }
+
+    public void setFillerPane(HBox fillerPane) {
+        this.fillerPane = fillerPane;
+    }
+
+    public HBox getCategoryPane() {
+        return categoryPane;
+    }
+
+    public void setCategoryPane(HBox categoryPane) {
+        this.categoryPane = categoryPane;
+    }
+
+    public Label getExitLabel() {
+        return exitLabel;
+    }
+
+    public void setExitLabel(Label exitLabel) {
+        this.exitLabel = exitLabel;
+    }
+
+    public HBox getLevelLabelPane() {
+        return levelLabelPane;
+    }
+
+    public void setLevelLabelPane(HBox levelLabelPane) {
+        this.levelLabelPane = levelLabelPane;
+    }
+
+    public Label getLevelLabel() {
+        return levelLabel;
+    }
+
+    public void setLevelLabel(Label levelLabel) {
+        this.levelLabel = levelLabel;
+    }
+
+    public VBox getGameplayVBox() {
+        return gameplayVBox;
+    }
+
+    public void setGameplayVBox(VBox gameplayVBox) {
+        this.gameplayVBox = gameplayVBox;
+    }
+
+    public HBox getOuterGameHBox() {
+        return outerGameHBox;
+    }
+
+    public void setOuterGameHBox(HBox outerGameHBox) {
+        this.outerGameHBox = outerGameHBox;
+    }
+
+    public HBox getBottomHBox() {
+        return bottomHBox;
+    }
+
+    public void setBottomHBox(HBox bottomHBox) {
+        this.bottomHBox = bottomHBox;
+    }
+
+    public TextField getLoginField() {
+        return loginField;
+    }
+
+    public void setLoginField(TextField loginField) {
+        this.loginField = loginField;
+    }
+
+    public TextField getPasswordField() {
+        return passwordField;
+    }
+
+    public void setPasswordField(TextField passwordField) {
+        this.passwordField = passwordField;
+    }
+
+    public ChoiceBox<String> getProfileBox() {
+        return profileBox;
+    }
+
+    public void setProfileBox(ChoiceBox<String> profileBox) {
+        this.profileBox = profileBox;
+    }
+
+    public ObservableList<String> getProfileBoxData() {
+        return profileBoxData;
+    }
+
+    public void setProfileBoxData(ObservableList<String> profileBoxData) {
+        this.profileBoxData = profileBoxData;
+    }
+
+    public ChoiceBox<String> getGameModesBox() {
+        return gameModesBox;
+    }
+
+    public void setGameModesBox(ChoiceBox<String> gameModesBox) {
+        this.gameModesBox = gameModesBox;
+    }
+
+    public ObservableList<String> getGameModesBoxData() {
+        return gameModesBoxData;
+    }
+
+    public void setGameModesBoxData(ObservableList<String> gameModesBoxData) {
+        this.gameModesBoxData = gameModesBoxData;
+    }
+
+    public Button getStartPlayingButton() {
+        return startPlayingButton;
+    }
+
+    public void setStartPlayingButton(Button startPlayingButton) {
+        this.startPlayingButton = startPlayingButton;
+    }
+
+    public Button getHomeButton() {
+        return homeButton;
+    }
+
+    public void setHomeButton(Button homeButton) {
+        this.homeButton = homeButton;
+    }
+
+    public Pane getLinePane() {
+        return linePane;
+    }
+
+    public void setLinePane(Pane linePane) {
+        this.linePane = linePane;
+    }
+
+    public Label getCategoryLabel() {
+        return categoryLabel;
+    }
+
+    public void setCategoryLabel(Label categoryLabel) {
+        this.categoryLabel = categoryLabel;
+    }
+
+    public HBox getTimePane() {
+        return timePane;
+    }
+
+    public void setTimePane(HBox timePane) {
+        this.timePane = timePane;
+    }
+
+    public Label getRemainingTimeLabel() {
+        return remainingTimeLabel;
+    }
+
+    public void setRemainingTimeLabel(Label remainingTimeLabel) {
+        this.remainingTimeLabel = remainingTimeLabel;
+    }
+
+    public Label getCurrentTimeLabel() {
+        return currentTimeLabel;
+    }
+
+    public void setCurrentTimeLabel(Label currentTimeLabel) {
+        this.currentTimeLabel = currentTimeLabel;
+    }
+
+    public StackPane getPlayPane() {
+        return playPane;
+    }
+
+    public void setPlayPane(StackPane playPane) {
+        this.playPane = playPane;
+    }
+
+    public BorderPane getAppPane() {
+        return appPane;
+    }
+
+    public void setAppPane(BorderPane appPane) {
+        this.appPane = appPane;
+    }
+
+    public VBox getHudPane() {
+        return hudPane;
+    }
+
+    public void setHudPane(VBox hudPane) {
+        this.hudPane = hudPane;
+    }
+
+    public Label getCurrentGuessLabel() {
+        return currentGuessLabel;
+    }
+
+    public void setCurrentGuessLabel(Label currentGuessLabel) {
+        this.currentGuessLabel = currentGuessLabel;
+    }
+
+    public HBox getCurrentGuessBox() {
+        return currentGuessBox;
+    }
+
+    public void setCurrentGuessBox(HBox currentGuessBox) {
+        this.currentGuessBox = currentGuessBox;
+    }
+
+    public ScrollPane getWordScrollPane() {
+        return wordScrollPane;
+    }
+
+    public void setWordScrollPane(ScrollPane wordScrollPane) {
+        this.wordScrollPane = wordScrollPane;
+    }
+
+    public GridPane getWordGrid() {
+        return wordGrid;
+    }
+
+    public void setWordGrid(GridPane wordGrid) {
+        this.wordGrid = wordGrid;
+    }
+
+    public VBox getScorePane() {
+        return scorePane;
+    }
+
+    public void setScorePane(VBox scorePane) {
+        this.scorePane = scorePane;
+    }
+
+    public GridPane getTotalScoreBox() {
+        return totalScoreBox;
+    }
+
+    public void setTotalScoreBox(GridPane totalScoreBox) {
+        this.totalScoreBox = totalScoreBox;
+    }
+
+    public VBox getTargetBox() {
+        return targetBox;
+    }
+
+    public void setTargetBox(VBox targetBox) {
+        this.targetBox = targetBox;
+    }
+
+    public Label getTotalLabel() {
+        return totalLabel;
+    }
+
+    public void setTotalLabel(Label totalLabel) {
+        this.totalLabel = totalLabel;
+    }
+
+    public Label getTotalScoreLabel() {
+        return totalScoreLabel;
+    }
+
+    public void setTotalScoreLabel(Label totalScoreLabel) {
+        this.totalScoreLabel = totalScoreLabel;
+    }
+
+    public VBox getWordPointVBox() {
+        return wordPointVBox;
+    }
+
+    public void setWordPointVBox(VBox wordPointVBox) {
+        this.wordPointVBox = wordPointVBox;
+    }
+
+    public HBox getWordPointLine() {
+        return wordPointLine;
+    }
+
+    public void setWordPointLine(HBox wordPointLine) {
+        this.wordPointLine = wordPointLine;
+    }
+
+    public Label getTargetPointLabel() {
+        return targetPointLabel;
+    }
+
+    public void setTargetPointLabel(Label targetPointLabel) {
+        this.targetPointLabel = targetPointLabel;
+    }
+
+    public Label getTargetLabel() {
+        return targetLabel;
+    }
+
+    public void setTargetLabel(Label targetLabel) {
+        this.targetLabel = targetLabel;
+    }
+
+    public Label getReplayLabel() {
+        return replayLabel;
+    }
+
+    public void setReplayLabel(Label replayLabel) {
+        this.replayLabel = replayLabel;
+    }
+
+    public ArrayList<List<StackPane>> getLevelNodes() {
+        return levelNodes;
+    }
+
+    public void setLevelNodes(ArrayList<List<StackPane>> levelNodes) {
+        this.levelNodes = levelNodes;
+    }
+
+    public ArrayList<List<StackPane>> getLetterNodes() {
+        return letterNodes;
+    }
+
+    public void setLetterNodes(ArrayList<List<StackPane>> letterNodes) {
+        this.letterNodes = letterNodes;
+    }
+
+    public ArrayList<GameState> getStateArray() {
+        return stateArray;
+    }
+
+    public void setStateArray(ArrayList<GameState> stateArray) {
+        this.stateArray = stateArray;
+    }
+
+    public int getStateIndex() {
+        return stateIndex;
+    }
+
+    public void setStateIndex(int stateIndex) {
+        this.stateIndex = stateIndex;
     }
 }
