@@ -12,7 +12,7 @@ import java.nio.file.Path;
 public class GameDataFile implements AppFileComponent {
     @Override
     public void saveData(AppDataComponent data, Path to) {
-
+        GameData gameData = (GameData) data;
     }
 
     @Override
