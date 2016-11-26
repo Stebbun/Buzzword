@@ -8,10 +8,18 @@ import components.AppDataComponent;
  */
 public class GameData implements AppDataComponent {
     private Profile profile;
-    public  AppTemplate    appTemplate;
+    public AppTemplate appTemplate;
 
-    public GameData(AppTemplate appTemplate) {
+    public GameData(AppTemplate appTemplate){
         this.appTemplate = appTemplate;
+    }
+
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
     }
 
     @Override

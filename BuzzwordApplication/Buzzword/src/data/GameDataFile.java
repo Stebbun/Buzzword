@@ -1,8 +1,10 @@
 package data;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import components.AppDataComponent;
 import components.AppFileComponent;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 
@@ -13,6 +15,14 @@ public class GameDataFile implements AppFileComponent {
     @Override
     public void saveData(AppDataComponent data, Path to) {
         GameData gameData = (GameData) data;
+
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            mapper.writerWithDefaultPrettyPrinter().writeValue(new File(to.toString()), gameData);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
