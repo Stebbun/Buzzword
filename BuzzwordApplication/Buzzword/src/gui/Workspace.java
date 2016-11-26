@@ -59,9 +59,9 @@ public class Workspace extends AppWorkspaceComponent {
     TextField loginField;
     TextField passwordField;
 
-    ComboBox<String> profileBox;
+    ChoiceBox<String> profileBox;
     ObservableList<String> profileBoxData = FXCollections.observableArrayList();
-    ComboBox<String> gameModesBox;
+    ChoiceBox<String> gameModesBox;
     ObservableList<String> gameModesBoxData = FXCollections.observableArrayList();
     Button startPlayingButton;
     Button homeButton; //returns to homeLoggedScreen
@@ -96,11 +96,13 @@ public class Workspace extends AppWorkspaceComponent {
     int stateIndex;
 
     public Workspace(AppTemplate initApp) throws IOException {
+        System.setProperty("glass.accessible.force", "false");
         app = initApp;
         gui = app.getGUI();
         layoutGUI();     // initialize all the workspace (GUI) components including the containers and their layout
 
-        stateArray = new ArrayList<GameState>();
+        //for viewing purposes only
+       /* stateArray = new ArrayList<GameState>();
         stateArray.add(GameState.HOME_SCREEN_LOG_PROMPT);
         stateArray.add(GameState.HOME_SCREEN_LOGGED);
         stateArray.add(GameState.LEVEL_SELECTION);
@@ -109,7 +111,7 @@ public class Workspace extends AppWorkspaceComponent {
             state = stateArray.get(stateIndex);
             reinitialize();
             stateIndex++;
-        });
+        });*/
 
         //logInPrompt();
 
@@ -134,7 +136,7 @@ public class Workspace extends AppWorkspaceComponent {
         loginButton = new Button(propertyManager.getPropertyValue(LOGIN_BUTTON));
         menuBox = new VBox();
         menuBox.getChildren().addAll(createProfileButton, loginButton);
-        menuBox.setMinWidth(300);
+        menuBox.setMinWidth(200);
         menuBox.setSpacing(50);
         menuBox.setAlignment(Pos.BASELINE_RIGHT);
         menuBox.setPadding(new Insets(150, 0, 0, 0));
@@ -295,8 +297,8 @@ public class Workspace extends AppWorkspaceComponent {
         }
 
         //CHANGE LATER IN ACCORDANCE TO GAME DATA!!! *******
-        for(int i = 0, k = 1; i < 2; i++)
-            for(int j = 0; j < 4; j++, k++) {
+        for(int i = 0; i < 2; i++)
+            for(int j = 0, k = 1; j < 4; j++, k++) {
                 ((Label) levelNodes.get(i).get(j).getChildren().get(1)).setText(Integer.toString(k));
                 //FAKE DATA
                 if(i == 0) {
@@ -397,9 +399,13 @@ public class Workspace extends AppWorkspaceComponent {
         levelLabelPane.getChildren().addAll(blankLeftBox1, levelLabel, blankRightBox1);
 
         //bottomHBox
-        replayLabel = new Label("");
-        Image image = new Image(this.getClass().getResourceAsStream("play.png"));
-        replayLabel.setGraphic(new ImageView(image));
+        try {
+            replayLabel = new Label("");
+            Image image = new Image(Workspace.class.getResourceAsStream("/images/play.png"));
+            replayLabel.setGraphic(new ImageView(image));
+        }catch(Exception e){
+
+        }
 
         HBox blankLeftBox2 = new HBox();
         HBox.setHgrow(blankLeftBox2, Priority.ALWAYS);
@@ -500,7 +506,7 @@ public class Workspace extends AppWorkspaceComponent {
     private void setUpHomeLogged(){
         workspace.getChildren().add(baseHBox);
         //menuBox
-        profileBox = new ComboBox<String>();
+        profileBox = new ChoiceBox<String>();
         //REPLACE LATER!!!
         profileBoxData.add("Steven");
         profileBoxData.add("Log out");
@@ -508,7 +514,7 @@ public class Workspace extends AppWorkspaceComponent {
         //*****
         profileBox.setValue("Steven");
 
-        gameModesBox = new ComboBox<String>();
+        gameModesBox = new ChoiceBox<String>();
         //REPLACE LATER!!!
         gameModesBoxData.add("Famous People");
         gameModesBoxData.add("Animals");
