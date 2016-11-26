@@ -26,12 +26,13 @@ public class Profile {
     private void generateInitData() {
         //Generate Animals game mode
         try {
+            gameModes = new ArrayList<GameMode>();
             ArrayList<Level> animalLevels = new ArrayList<>();
             InputStream is = Profile.class.getResourceAsStream("/initialdata/animals.txt");
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             String words = br.readLine();
             String[] wordArray = words.split(" ");
-            Set<String> wordSet = new HashSet<>();
+            ArrayList<String> wordSet = new ArrayList<>();
             int k = 0;
             int targetScore = 0;
 
@@ -44,8 +45,9 @@ public class Profile {
 
 
                 Level level = new Level(false, wordSet, targetScore);
-                wordSet.clear();
                 animalLevels.add(level);
+                wordSet.clear();
+
             }
 
             GameMode animals = new GameMode("Animals", animalLevels, 0);

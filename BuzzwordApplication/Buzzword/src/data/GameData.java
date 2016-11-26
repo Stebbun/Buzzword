@@ -26,4 +26,12 @@ public class GameData implements AppDataComponent {
     public void reset() {
 
     }
+
+    public AppTemplate getAppTemplate() {
+        return appTemplate;
+    }
+
+    public void setAppTemplate(AppTemplate appTemplate) {
+        this.appTemplate = appTemplate;
+    }
 }

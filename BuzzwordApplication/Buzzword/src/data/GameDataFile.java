@@ -16,6 +16,7 @@ public class GameDataFile implements AppFileComponent {
     public void saveData(AppDataComponent data, Path to) {
         GameData gameData = (GameData) data;
 
+        gameData.setAppTemplate(null);
         ObjectMapper mapper = new ObjectMapper();
         try {
             mapper.writerWithDefaultPrettyPrinter().writeValue(new File(to.toString()), gameData);

@@ -1,6 +1,7 @@
 package data;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -12,9 +13,11 @@ public class Level {
     Set<String> words;
     int targetScore;
 
-    public Level(boolean completed, Set<String> words, int targetScore) {
+    public Level(boolean completed, ArrayList<String> words, int targetScore) {
         this.completed = completed;
-        this.words = words;
+        this.words = new HashSet<>();
+        for(int i = 0; i < words.size(); i++)
+            this.words.add(words.get(i));
         this.targetScore = targetScore;
     }
 
