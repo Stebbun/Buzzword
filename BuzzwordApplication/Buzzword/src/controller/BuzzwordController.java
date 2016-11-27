@@ -140,6 +140,18 @@ public class BuzzwordController implements FileController{
         }
     }
 
+    public void handleLogOut(){
+        Workspace workspace = (Workspace) appTemplate.getWorkspaceComponent();
+        workspace.setState(GameState.HOME_SCREEN);
+        workspace.reinitialize();
+        workspace.getProfileBoxData().clear();
+        workspace.getGameModesBoxData().clear();
+    }
+
+    public void handleLevelSelection(){
+        
+    }
+
     private void save(Path target) throws IOException {
         appTemplate.getFileComponent().saveData(gameData, target.toAbsolutePath());
     }

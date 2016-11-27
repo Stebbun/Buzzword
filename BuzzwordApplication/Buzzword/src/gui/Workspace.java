@@ -3,6 +3,7 @@ package gui;
 import apptemplate.AppTemplate;
 import components.AppWorkspaceComponent;
 import controller.BuzzwordController;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -21,6 +22,7 @@ import ui.AppGUI;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
 import static Buzzword.BuzzwordProperties.*;
 
@@ -359,6 +361,18 @@ public class Workspace extends AppWorkspaceComponent {
                 controller.exitLoginPrompt();
         });
 
+        profileBox.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends String> o, String s, String t) ->{
+            try {
+                if (t.equals("Log out"))
+                    controller.handleLogOut();
+            } catch(Exception e){
+                //squelch
+            }
+        });
+
+        startPlayingButton.setOnAction(e ->{
+            controller.handleLevelSelection();
+        });
     }
 
     public void reinitialize(){
