@@ -2,11 +2,13 @@ package controller;
 
 import apptemplate.AppTemplate;
 import data.GameData;
+import data.GameInstance;
 import data.GameMode;
 import data.Profile;
 import gui.GameState;
 import gui.Workspace;
 import javafx.scene.control.Label;
+import javafx.scene.layout.StackPane;
 import propertymanager.PropertyManager;
 import ui.AppMessageDialogSingleton;
 
@@ -22,7 +24,11 @@ import static settings.AppPropertyType.*;
  */
 public class BuzzwordController implements FileController{
     private AppTemplate appTemplate;
+    private int selectedModeIndex;
+    private GameInstance gameInstance;
     public static GameData gameData;
+    private int selectedIindex;
+    private int selectedJindex;
 
     public BuzzwordController(AppTemplate appTemplate) {
         this.appTemplate = appTemplate;
@@ -156,7 +162,7 @@ public class BuzzwordController implements FileController{
         workspace.setState(GameState.LEVEL_SELECTION);
         workspace.reinitialize();
 
-        int selectedModeIndex = 0;
+        selectedModeIndex = 0;
         for(int i = 0; i < gameData.getProfile().getGameModes().size(); i++)
             if(gameData.getProfile().getGameModes().get(i).getCategory().equals(workspace.getGameModesBox().getValue()))
                 selectedModeIndex = i;
@@ -168,12 +174,38 @@ public class BuzzwordController implements FileController{
                     workspace.getLevelNodes().get(i).get(j).getChildren().get(1).getStyleClass().add("letter-label-enabled");
                 }
             }
+
+        for(int i = 0; i < 2; i++)
+            for(int j = 0; j < 4; j++) {
+                selectedIindex = i;
+                selectedJindex = j;
+                workspace.getLevelNodes().get(i).get(j).setOnMouseClicked(e ->{
+                    StackPane sp = (StackPane)e.getSource();
+                    Label lab = (Label) sp.getChildren().get(1);
+
+                    this.handleLevelSelection(Integer.parseInt(lab.getText()));
+                });
+            }
     }
 
-    public void handleLevelSelection(){
+    public void handleLevelSelection(int levelIndex){
+        levelIndex = levelIndex - 1;
         Workspace workspace = (Workspace) appTemplate.getWorkspaceComponent();
+        GameMode selectedMode = gameData.getProfile().getGameModes().get(selectedModeIndex);
 
-        
+        //levelIndex 0-7
+        if(selectedMode.getMaxCompletedLevel() >= levelIndex){
+            gameInstance = new GameInstance(selectedMode, selectedMode.getLevels().get(levelIndex));
+            workspace.setState(GameState.GAMEPLAY_SCREEN);
+            workspace.reinitialize();
+
+
+            play();
+        }
+    }
+
+    public void play(){
+
     }
 
     private void save(Path target) throws IOException {

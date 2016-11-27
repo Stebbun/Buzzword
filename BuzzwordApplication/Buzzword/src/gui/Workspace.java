@@ -95,7 +95,7 @@ public class Workspace extends AppWorkspaceComponent {
     Label targetPointLabel;
     Label targetLabel;
     Label replayLabel;
-    ArrayList<List<StackPane>> levelNodes;
+    ArrayList<List<StackPane>> levelNodes = new ArrayList<List<StackPane>>();;
     ArrayList<List<StackPane>> letterNodes;
 
     ArrayList<GameState> stateArray;
@@ -131,7 +131,7 @@ public class Workspace extends AppWorkspaceComponent {
         //state = GameState.GAMEPLAY_SCREEN;
         //reinitialize();
 
-
+        buildDemoLevelSelect();
         setupHandlers(); // ... and set up event handling
         activateWorkspace(gui.getAppPane());
     }
@@ -289,7 +289,6 @@ public class Workspace extends AppWorkspaceComponent {
 
     private void buildDemoLevelSelect(){
 
-        levelNodes = new ArrayList<List<StackPane>>();
         for(int i = 0; i < 2; i++) {
             ArrayList<StackPane> stackArray = new ArrayList<StackPane>();
             for(int j = 0; j < 4; j++){
@@ -374,12 +373,16 @@ public class Workspace extends AppWorkspaceComponent {
             controller.handleStartButton();
         });
 
-        for(int i = 0; i < 2; i++)
+        /*for(int i = 0; i < 2; i++)
             for(int j = 0; j < 4; j++) {
+                selectedIindex = i;
+                selectedJindex = j;
                 levelNodes.get(i).get(j).setOnMouseClicked(e ->{
-                    controller.handleLevelSelection();
+                    controller.handleLevelSelection(selectedIindex*4 + selectedJindex);
                 });
-            }
+            }*/
+
+
     }
 
     public void reinitialize(){
