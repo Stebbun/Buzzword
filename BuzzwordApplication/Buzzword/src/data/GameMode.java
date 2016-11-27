@@ -24,6 +24,14 @@ public class GameMode {
         return category;
     }
 
+    public int getMaxCompletedLevel() {
+        return maxCompletedLevel;
+    }
+
+    public void setMaxCompletedLevel(int maxCompletedLevel) {
+        this.maxCompletedLevel = maxCompletedLevel;
+    }
+
     public void setCategory(String category) {
         this.category = category;
     }

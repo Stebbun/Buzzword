@@ -2,9 +2,11 @@ package controller;
 
 import apptemplate.AppTemplate;
 import data.GameData;
+import data.GameMode;
 import data.Profile;
 import gui.GameState;
 import gui.Workspace;
+import javafx.scene.control.Label;
 import propertymanager.PropertyManager;
 import ui.AppMessageDialogSingleton;
 
@@ -116,6 +118,7 @@ public class BuzzwordController implements FileController{
                 for(int i = 0; i < gameData.getProfile().getGameModes().size(); i++)
                     workspace.getGameModesBoxData().add(gameData.getProfile().getGameModes().get(i).getCategory());
                 workspace.getGameModesBox().setItems(workspace.getGameModesBoxData());
+                workspace.getGameModesBox().setValue(workspace.getGameModesBoxData().get(0));
             }
             catch(InvalidLoginException e){
                 messageDialog.show(propertyManager.getPropertyValue(LOGIN_ERROR_TITLE),
@@ -148,7 +151,28 @@ public class BuzzwordController implements FileController{
         workspace.getGameModesBoxData().clear();
     }
 
+    public void handleStartButton(){
+        Workspace workspace = (Workspace) appTemplate.getWorkspaceComponent();
+        workspace.setState(GameState.LEVEL_SELECTION);
+        workspace.reinitialize();
+
+        int selectedModeIndex = 0;
+        for(int i = 0; i < gameData.getProfile().getGameModes().size(); i++)
+            if(gameData.getProfile().getGameModes().get(i).getCategory().equals(workspace.getGameModesBox().getValue()))
+                selectedModeIndex = i;
+
+        for(int i = 0; i < 2; i++)
+            for(int j = 0; j < 4; j++) {
+                if(gameData.getProfile().getGameModes().get(selectedModeIndex).getMaxCompletedLevel() > (i*4 + j)) {
+                    workspace.getLevelNodes().get(i).get(j).getChildren().get(0).getStyleClass().add("circle-enabled");
+                    workspace.getLevelNodes().get(i).get(j).getChildren().get(1).getStyleClass().add("letter-label-enabled");
+                }
+            }
+    }
+
     public void handleLevelSelection(){
+        Workspace workspace = (Workspace) appTemplate.getWorkspaceComponent();
+
         
     }
 

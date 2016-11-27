@@ -69,7 +69,7 @@ public class Workspace extends AppWorkspaceComponent {
     ObservableList<String> profileBoxData = FXCollections.observableArrayList();
     ChoiceBox<String> gameModesBox;
     ObservableList<String> gameModesBoxData = FXCollections.observableArrayList();
-    Button startPlayingButton;
+    Button startPlayingButton = new Button("Start Playing");
     Button homeButton; //returns to homeLoggedScreen
 
     Pane linePane;
@@ -308,14 +308,14 @@ public class Workspace extends AppWorkspaceComponent {
         }
 
         //CHANGE LATER IN ACCORDANCE TO GAME DATA!!! *******
-        for(int i = 0; i < 2; i++)
-            for(int j = 0, k = 1; j < 4; j++, k++) {
+        for(int i = 0, k = 1; i < 2; i++)
+            for(int j = 0; j < 4; j++, k++) {
                 ((Label) levelNodes.get(i).get(j).getChildren().get(1)).setText(Integer.toString(k));
                 //FAKE DATA
-                if(i == 0) {
+                /*if(i == 0) {
                     levelNodes.get(i).get(j).getChildren().get(0).getStyleClass().add("circle-enabled");
                     levelNodes.get(i).get(j).getChildren().get(1).getStyleClass().add("letter-label-enabled");
-                }
+                }*/
             }
 
 
@@ -371,8 +371,15 @@ public class Workspace extends AppWorkspaceComponent {
         });
 
         startPlayingButton.setOnAction(e ->{
-            controller.handleLevelSelection();
+            controller.handleStartButton();
         });
+
+        for(int i = 0; i < 2; i++)
+            for(int j = 0; j < 4; j++) {
+                levelNodes.get(i).get(j).setOnMouseClicked(e ->{
+                    controller.handleLevelSelection();
+                });
+            }
     }
 
     public void reinitialize(){
@@ -555,8 +562,6 @@ public class Workspace extends AppWorkspaceComponent {
 
     private void setUpHomeLogged(){
         workspace.getChildren().add(baseHBox);
-
-        startPlayingButton = new Button("Start Playing");
 
         menuBox.getChildren().addAll(profileBox, gameModesBox, startPlayingButton);
 
