@@ -10,6 +10,10 @@ public class GameMode {
     ArrayList<Level> levels;
     int maxCompletedLevel;
 
+    public GameMode(){
+
+    }
+
     public GameMode(String category, ArrayList<Level> levels, int maxCompletedLevel) {
         this.category = category;
         this.levels = levels;

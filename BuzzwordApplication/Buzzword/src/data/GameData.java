@@ -8,7 +8,11 @@ import components.AppDataComponent;
  */
 public class GameData implements AppDataComponent {
     private Profile profile;
-    public AppTemplate appTemplate;
+    private AppTemplate appTemplate;
+
+    public GameData(){
+
+    }
 
     public GameData(AppTemplate appTemplate){
         this.appTemplate = appTemplate;

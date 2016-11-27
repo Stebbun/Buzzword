@@ -3,6 +3,7 @@ package data;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import components.AppDataComponent;
 import components.AppFileComponent;
+import controller.BuzzwordController;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,7 +29,14 @@ public class GameDataFile implements AppFileComponent {
 
     @Override
     public void loadData(AppDataComponent data, Path from) throws IOException {
+        GameData gameData = (GameData) data;
 
+        ObjectMapper mapper = new ObjectMapper();
+        gameData = mapper.readValue(new File(from.toString()), GameData.class);
+
+        //check if valid later
+
+        BuzzwordController.setGameData(gameData);
     }
 
     /** This method will be used if we need to export data into other formats. */

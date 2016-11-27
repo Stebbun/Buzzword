@@ -13,6 +13,10 @@ public class Level {
     Set<String> words;
     int targetScore;
 
+    public Level(){
+
+    }
+
     public Level(boolean completed, ArrayList<String> words, int targetScore) {
         this.completed = completed;
         this.words = new HashSet<>();

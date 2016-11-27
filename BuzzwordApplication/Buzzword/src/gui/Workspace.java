@@ -10,6 +10,8 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -199,6 +201,10 @@ public class Workspace extends AppWorkspaceComponent {
         baseHBox.getChildren().addAll(menuBox, rightVBox);
         HBox.setHgrow(rightVBox, Priority.ALWAYS);
 
+        profileBox = new ChoiceBox<String>();
+
+        gameModesBox = new ChoiceBox<String>();
+
 
         workspace = new StackPane();//bottom layer is application, top layer is login
         workspace.getChildren().add(baseHBox);
@@ -333,19 +339,24 @@ public class Workspace extends AppWorkspaceComponent {
     private void setupHandlers(){
         controller = new BuzzwordController(app);
         loginButton.setOnAction( e ->{
-
+            controller.handleLoginPrompt();
         });
 
         createProfileButton.setOnAction(e ->{
             controller.createProfilePrompt();
         });
 
-        loginPane.setOnKeyPressed(e ->{
-            if(lastButtonClicked.equals(createProfileButton)){
-                controller.createProfile();
-            }else{
-                controller.handleLoginAttempt();
+        //for login pane
+        gui.getPrimaryScene().setOnKeyPressed(e ->{
+            if(e.getCode().equals(KeyCode.ENTER)) {
+                if (lastButtonClicked.equals(createProfileButton)) {
+                    controller.createProfile();
+                } else {
+                    controller.handleLoginAttempt();
+                }
             }
+            else if(e.getCode().equals(KeyCode.ESCAPE))
+                controller.exitLoginPrompt();
         });
 
     }
@@ -524,27 +535,12 @@ public class Workspace extends AppWorkspaceComponent {
 
     private void setUpHomeScreen(){
         workspace.getChildren().add(baseHBox);
+        menuBox.getChildren().addAll(createProfileButton, loginButton);
+        currentPane.getChildren().add(homeScreenPane);
     }
 
     private void setUpHomeLogged(){
         workspace.getChildren().add(baseHBox);
-        //menuBox
-        profileBox = new ChoiceBox<String>();
-        //REPLACE LATER!!!
-        profileBoxData.add("Steven");
-        profileBoxData.add("Log out");
-        profileBox.setItems(profileBoxData);
-        //*****
-        profileBox.setValue("Steven");
-
-        gameModesBox = new ChoiceBox<String>();
-        //REPLACE LATER!!!
-        gameModesBoxData.add("Famous People");
-        gameModesBoxData.add("Animals");
-        gameModesBoxData.add("Fruits");
-        gameModesBox.setItems(gameModesBoxData);
-        //*****
-        gameModesBox.setValue("Select Mode");
 
         startPlayingButton = new Button("Start Playing");
 

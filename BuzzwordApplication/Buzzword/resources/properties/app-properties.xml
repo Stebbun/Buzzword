@@ -42,6 +42,12 @@
         <property name="PROPERTIES_LOAD_ERROR_TITLE" value="Property Load Error"/>
         <property name="PROPERTIES_LOAD_ERROR_MESSAGE" value="An error occured loading a property file."/>
 
+        <property name="EMPTY_LOGIN_ERROR" value="Login or Password field is empty."/>
+        <property name="INVALID_LOGIN_ERROR" value="This profile name is not available. Please choose another."/>
+
+        <property name="LOGIN_ERROR_TITLE" value="Login Error."/>
+        <property name="LOGIN_ERROR" value="Invalid profile credentials."/>
+
         <!-- VERIFICATION MESSAGES -->
         <property name="NEW_COMPLETED_MESSAGE" value="New Game Ready"/>
         <property name="NEW_COMPLETED_TITLE" value="New Game Created"/>
