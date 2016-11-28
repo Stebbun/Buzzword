@@ -1,5 +1,6 @@
 package data;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -10,7 +11,7 @@ import java.util.Set;
 public class Level {
     boolean completed;
     //level will not have a letter grid. It will be randomly generated based on the words set
-    Set<String> words;
+    ArrayList<String> words;
     int targetScore;
 
     public Level(){
@@ -19,7 +20,7 @@ public class Level {
 
     public Level(boolean completed, ArrayList<String> words, int targetScore) {
         this.completed = completed;
-        this.words = new HashSet<>();
+        this.words = new ArrayList<>();
         for(int i = 0; i < words.size(); i++)
             this.words.add(words.get(i));
         this.targetScore = targetScore;
@@ -34,11 +35,11 @@ public class Level {
         this.completed = completed;
     }
 
-    public Set<String> getWords() {
+    public ArrayList<String> getWords() {
         return words;
     }
 
-    public void setWords(Set<String> words) {
+    public void setWords(ArrayList<String> words) {
         this.words = words;
     }
 

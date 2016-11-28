@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import static java.lang.Math.abs;
+
 /**
  * Created by Stebbun on 11/6/2016.
  */
@@ -17,7 +19,7 @@ public class GameInstance {
     private Level levelSelected;
     private ArrayList<ArrayList<Character>> letterGrid;
     private int currentTimer;
-    private Set<String> guaranteedWords;
+    private ArrayList<String> guaranteedWords;
     private Set<String> validWords;
     private Set<String> wordsGuessed;
     private int targetScore;
@@ -39,7 +41,7 @@ public class GameInstance {
     }
 
     private void generateGuaranteedWords() {
-        guaranteedWords = new HashSet<>();
+        guaranteedWords = new ArrayList<>();
         guaranteedWords = levelSelected.getWords();
     }
 
@@ -70,8 +72,31 @@ public class GameInstance {
         coordList = scg.getCoordinateList();
 
         for(int i = 0; i < guaranteedWords.size(); i++) {
-            ArrayList<Coordinate> validAdjacencyCoord = new ArrayList<>();
-            
+            int randomIndex = (int) (Math.random() * guaranteedWords.size());
+            Coordinate firstCoord = coordList.get(randomIndex);
+            coordList.set(randomIndex, firstCoord.setFlagged(true));
+            Coordinate currentCoord = firstCoord;
+
+            letterGrid.get(firstCoord.getX()).set(firstCoord.getY(), new Character(guaranteedWords.get(i).charAt(0)));
+            for(int j = 1; j < guaranteedWords.get(i).length(); j++){
+                ArrayList<Coordinate> validAdjacencyCoord = new ArrayList<>();
+                //add valid coordinates to this list and pick a random one
+                /*if x and y are between 0-3 inclusive
+                if x and y are within 1 value of the cursor
+                if flagged = false
+                then add it to validAdjacencyCoord*/
+                //go through entire coordList
+                for(int k = 0; k < coordList.size(); k++){
+                    if(Math.abs((currentCoord.getX() - coordList.get(k).getX())) <= 1)
+                        if(Math.abs((currentCoord.getY() - coordList.get(k).getY())) <= 1)
+                            if(!coordList.get(k).isFlagged())
+                                validAdjacencyCoord.add(coordList.get(k));
+
+                }
+                //pick a random one from valid adjacency coord
+                int randomAdjIndex = (int) (Math.random() * validAdjacencyCoord.size());
+                
+            }
         }
     }
 

@@ -34,7 +34,8 @@ public class Coordinate {
         return flagged;
     }
 
-    public void setFlagged(boolean flagged) {
+    public Coordinate setFlagged(boolean flagged) {
         this.flagged = flagged;
+        return this;
     }
 }

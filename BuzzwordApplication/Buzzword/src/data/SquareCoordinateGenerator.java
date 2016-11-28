@@ -20,6 +20,10 @@ public class SquareCoordinateGenerator {
                 coordinateList.add(new Coordinate(x,y));
     }
 
+    public void getRandom(){
+
+    }
+
     public ArrayList<Coordinate> getCoordinateList() {
         return coordinateList;
     }
