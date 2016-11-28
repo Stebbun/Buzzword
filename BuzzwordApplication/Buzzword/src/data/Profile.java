@@ -60,6 +60,76 @@ public class Profile {
             e.printStackTrace();
         }
 
+        //Generate Fruits and Veggies game mode
+        try {
+            ArrayList<Level> animalLevels = new ArrayList<>();
+            InputStream is = Profile.class.getResourceAsStream("/initialdata/fruitsveggies.txt");
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            String words = br.readLine();
+            String[] wordArray = words.split(" ");
+            ArrayList<String> wordSet = new ArrayList<>();
+            int k = 0;
+
+            for(int i = 0; i < 8; i++){
+                int targetScore = 0;
+                for(int j = 0; j < 3; j++) {
+                    wordSet.add(wordArray[k]);
+                    if(wordArray[k].length() >= 5)
+                        targetScore += wordArray[k].length() * 15;
+                    else
+                        targetScore += wordArray[k].length() * 10;
+                    k++;
+                }
+
+
+                Level level = new Level(false, wordSet, targetScore);
+                animalLevels.add(level);
+                wordSet.clear();
+
+            }
+
+            GameMode animals = new GameMode("Fruits and Vegetables", animalLevels, 0);
+            gameModes.add(animals);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //Generate Fruits and Veggies game mode
+        try {
+            ArrayList<Level> animalLevels = new ArrayList<>();
+            InputStream is = Profile.class.getResourceAsStream("/initialdata/birds.txt");
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            String words = br.readLine();
+            String[] wordArray = words.split(" ");
+            ArrayList<String> wordSet = new ArrayList<>();
+            int k = 0;
+
+            for(int i = 0; i < 8; i++){
+                int targetScore = 0;
+                for(int j = 0; j < 3; j++) {
+                    wordSet.add(wordArray[k]);
+                    if(wordArray[k].length() >= 5)
+                        targetScore += wordArray[k].length() * 15;
+                    else
+                        targetScore += wordArray[k].length() * 10;
+                    k++;
+                }
+
+
+                Level level = new Level(false, wordSet, targetScore);
+                animalLevels.add(level);
+                wordSet.clear();
+
+            }
+
+            GameMode animals = new GameMode("Birds", animalLevels, 0);
+            gameModes.add(animals);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     public String getUsername() {

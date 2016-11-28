@@ -230,7 +230,7 @@ public class BuzzwordController implements FileController{
     }
 
     public void handleExitFromGame(){
-        
+
     }
 
     public void handleExitGeneral(){

@@ -1,16 +1,15 @@
 package data;
 
+import controller.BuzzwordController;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import static java.lang.Math.abs;
-import static java.lang.Math.random;
 
 /**
  * Created by Stebbun on 11/6/2016.
@@ -31,14 +30,13 @@ public class GameInstance {
     public GameInstance(GameMode gameModeSelected, Level levelSelected) {
         this.gameModeSelected = gameModeSelected;
         this.levelSelected = levelSelected;
-
+        generateTargetScore();
         generateGuaranteedWords();
         initializeLetterGrid();
         generateLetterGrid();
         currentTimer = 60;
         generateValidWords();
         wordsGuessed = new HashSet<>();
-        generateTargetScore();
         currentScore = 0;
         currentGuess = "";
         isPaused = false;
@@ -69,18 +67,45 @@ public class GameInstance {
 
     private void generateValidWords() {
         validWords = new HashSet<>();
-        try {
-            InputStream is = Profile.class.getResourceAsStream("/initialdata/valid-animals.txt");
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-            String words = br.readLine();
-            String[] wordArray = words.split(" ");
-            for(int i = 0; i < wordArray.length; i++)
-                validWords.add(wordArray[i]);
+        if(gameModeSelected.getCategory().equals("Animals")) {
+            try {
+                InputStream is = Profile.class.getResourceAsStream("/initialdata/valid-animals.txt");
+                BufferedReader br = new BufferedReader(new InputStreamReader(is));
+                String words = br.readLine();
+                String[] wordArray = words.split(" ");
+                for (int i = 0; i < wordArray.length; i++)
+                    validWords.add(wordArray[i]);
 
-        } catch (IOException e) {
-            e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+        else if(gameModeSelected.getCategory().equals("Fruits and Veggies")){
+            try {
+                InputStream is = Profile.class.getResourceAsStream("/initialdata/valid-fruitsveggies.txt");
+                BufferedReader br = new BufferedReader(new InputStreamReader(is));
+                String words = br.readLine();
+                String[] wordArray = words.split(" ");
+                for (int i = 0; i < wordArray.length; i++)
+                    validWords.add(wordArray[i]);
 
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else if(gameModeSelected.getCategory().equals("Birds")){
+            try {
+                InputStream is = Profile.class.getResourceAsStream("/initialdata/valid-birds.txt");
+                BufferedReader br = new BufferedReader(new InputStreamReader(is));
+                String words = br.readLine();
+                String[] wordArray = words.split(" ");
+                for (int i = 0; i < wordArray.length; i++)
+                    validWords.add(wordArray[i]);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
     }
 
