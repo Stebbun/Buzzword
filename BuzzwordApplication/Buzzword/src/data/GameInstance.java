@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static java.lang.Math.abs;
+import static java.lang.Math.random;
 
 /**
  * Created by Stebbun on 11/6/2016.
@@ -87,12 +88,16 @@ public class GameInstance {
         coordList = scg.getCoordinateList();
 
         for(int i = 0; i < guaranteedWords.size(); i++) {
-            int randomIndex = (int) (Math.random() * guaranteedWords.size());
+
+            int randomIndex = (int) (Math.random() * coordList.size());
+            while(coordList.get(randomIndex).isFlagged()){
+                randomIndex = (int) (Math.random() * coordList.size());
+            }
             Coordinate firstCoord = coordList.get(randomIndex);
             coordList.set(randomIndex, firstCoord.setFlagged(true));
             Coordinate currentCoord = firstCoord;
 
-            letterGrid.get(firstCoord.getX()).set(firstCoord.getY(), new Character(guaranteedWords.get(i).charAt(0)));
+            letterGrid.get(firstCoord.getX()).set(firstCoord.getY(), new Character(Character.toUpperCase(guaranteedWords.get(i).charAt(0))));
             for(int j = 1; j < guaranteedWords.get(i).length(); j++){
                 ArrayList<Coordinate> validAdjacencyCoord = new ArrayList<>();
                 //add valid coordinates to this list and pick a random one
@@ -105,18 +110,27 @@ public class GameInstance {
                     if(Math.abs((currentCoord.getX() - coordList.get(k).getX())) <= 1)
                         if(Math.abs((currentCoord.getY() - coordList.get(k).getY())) <= 1)
                             if(!coordList.get(k).isFlagged())
-                                validAdjacencyCoord.add(coordList.get(k));
+                                if(!((currentCoord.getX() == coordList.get(k).getX())
+                                        && (currentCoord.getY() == coordList.get(k).getY())))
+                                        validAdjacencyCoord.add(coordList.get(k));
 
                 }
                 //pick a random one from valid adjacency coord
-                int randomAdjIndex = (int) (Math.random() * validAdjacencyCoord.size());
-                Coordinate randomCoord = validAdjacencyCoord.get(randomAdjIndex);
-                for(int l = 0; l < coordList.size(); l++){
-                    if(coordList.get(l).equals(randomCoord)){
-                        randomCoord = randomCoord.setFlagged(true);
-                        coordList.set(l, randomCoord);
-                        letterGrid.get(randomCoord.getX()).set(randomCoord.getY(), new Character(guaranteedWords.get(i).charAt(j)));
+                if(validAdjacencyCoord.size() != 0) {
+                    int randomAdjIndex = (int) (Math.random() * validAdjacencyCoord.size());
+                    Coordinate randomCoord = validAdjacencyCoord.get(randomAdjIndex);
+                    for (int l = 0; l < coordList.size(); l++) {
+                        if (coordList.get(l).equals(randomCoord)) {
+                            randomCoord = randomCoord.setFlagged(true);
+                            coordList.set(l, randomCoord);
+                            currentCoord = randomCoord;
+                            letterGrid.get(randomCoord.getX()).set(randomCoord.getY(),
+                                    new Character(Character.toUpperCase(guaranteedWords.get(i).charAt(j))));
+                        }
                     }
+                }else{
+                    //deduct from target score since i couldnt fit the word
+                    targetScore = targetScore - (guaranteedWords.get(i).length() * 10);
                 }
             }
         }

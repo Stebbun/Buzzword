@@ -9,6 +9,7 @@ import gui.GameState;
 import gui.Workspace;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Circle;
 import propertymanager.PropertyManager;
 import ui.AppMessageDialogSingleton;
 
@@ -16,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 import static settings.AppPropertyType.*;
 
@@ -199,8 +201,24 @@ public class BuzzwordController implements FileController{
             workspace.setState(GameState.GAMEPLAY_SCREEN);
             workspace.reinitialize();
 
+            //update lettergrid
+            gameplayLetterGrid();
+
+            //display targetscore
+            workspace.getTargetBox().getChildren().set(1, new Label(Integer.toString(gameInstance.getTargetScore())));
+            workspace.getTargetBox().getChildren().get(1).getStyleClass().add("target");
 
             play();
+        }
+    }
+
+    private void gameplayLetterGrid() {
+        Workspace workspace = (Workspace) appTemplate.getWorkspaceComponent();
+        for(int i = 0; i < 4; i++) {
+            for(int j = 0; j < 4; j++){
+                ((Label)workspace.getLetterNodes().get(i).get(j).getChildren().get(1))
+                        .setText(Character.toString(gameInstance.getLetterGrid().get(i).get(j)));
+            }
         }
     }
 

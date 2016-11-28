@@ -473,7 +473,7 @@ public class Workspace extends AppWorkspaceComponent {
         bottomHBox.getChildren().addAll(blankLeftBox2, replayLabel, blankRightBox2);
 
         //hudPane
-        currentGuessLabel = new Label("B U");
+        currentGuessLabel = new Label("");
         currentGuessLabel.getStyleClass().add("guess-label");
         currentGuessBox = new HBox();
         currentGuessBox.getChildren().add(currentGuessLabel);
@@ -484,13 +484,13 @@ public class Workspace extends AppWorkspaceComponent {
         wordGrid.getColumnConstraints().add(new ColumnConstraints(200));
         wordGrid.getColumnConstraints().add(new ColumnConstraints(50));
         ArrayList<String> words = new ArrayList<>();
-        words.add("WAR");
-        words.add("RAW");
-        words.add("DRAW");
+        words.add(" ");
+        words.add(" ");
+        words.add(" ");
         ArrayList<String> points = new ArrayList<>();
-        points.add("10");
-        points.add("10");
-        points.add("20");
+        points.add(" ");
+        points.add(" ");
+        points.add(" ");
         for(int i = 0; i < 3; i++) {
             wordGrid.add(new Label(words.get(i)), 0, i);
             wordGrid.add(new Label(points.get(i)), 1, i);
@@ -510,7 +510,7 @@ public class Workspace extends AppWorkspaceComponent {
         totalScoreBox.getColumnConstraints().add(new ColumnConstraints(200));
         totalScoreBox.getColumnConstraints().add(new ColumnConstraints(50));
         totalScoreBox.add(new Label("TOTAL"), 0, 0);
-        totalScoreBox.add(new Label("40"), 1, 0);
+        totalScoreBox.add(new Label(" "), 1, 0);
         for(int i = 0; i < 2; i++){
             totalScoreBox.getChildren().get(i).getStyleClass().add("total");
         }

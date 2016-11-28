@@ -17,6 +17,7 @@ public class GameMode {
     public GameMode(String category, ArrayList<Level> levels, int maxCompletedLevel) {
         this.category = category;
         this.levels = levels;
+        this.maxCompletedLevel = maxCompletedLevel;
     }
 
     public String getCategory() {

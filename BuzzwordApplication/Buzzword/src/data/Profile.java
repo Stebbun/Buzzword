@@ -34,12 +34,15 @@ public class Profile {
             String[] wordArray = words.split(" ");
             ArrayList<String> wordSet = new ArrayList<>();
             int k = 0;
-            int targetScore = 0;
 
             for(int i = 0; i < 8; i++){
-                targetScore = wordArray[k].length() * 10;
+                int targetScore = 0;
                 for(int j = 0; j < 3; j++) {
                     wordSet.add(wordArray[k]);
+                    if(wordArray[k].length() >= 5)
+                        targetScore += wordArray[k].length() * 15;
+                    else
+                        targetScore += wordArray[k].length() * 10;
                     k++;
                 }
 
