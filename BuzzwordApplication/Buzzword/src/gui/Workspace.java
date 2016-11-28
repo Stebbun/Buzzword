@@ -95,7 +95,7 @@ public class Workspace extends AppWorkspaceComponent {
     Label targetPointLabel;
     Label targetLabel;
     Label replayLabel;
-    ArrayList<List<StackPane>> levelNodes = new ArrayList<List<StackPane>>();;
+    ArrayList<List<StackPane>> levelNodes = new ArrayList<List<StackPane>>();
     ArrayList<List<StackPane>> letterNodes;
 
     ArrayList<GameState> stateArray;

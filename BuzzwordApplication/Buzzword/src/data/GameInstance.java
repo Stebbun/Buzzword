@@ -30,14 +30,29 @@ public class GameInstance {
         this.gameModeSelected = gameModeSelected;
         this.levelSelected = levelSelected;
 
+        generateGuaranteedWords();
+        initializeLetterGrid();
         generateLetterGrid();
         currentTimer = 60;
-        generateGuaranteedWords();
         generateValidWords();
         wordsGuessed = new HashSet<>();
         generateTargetScore();
         currentScore = 0;
         currentGuess = "";
+    }
+
+    private void initializeLetterGrid(){
+        letterGrid = new ArrayList<ArrayList<Character>>();
+        for(int i = 0; i < 4; i++){
+            letterGrid.add(new ArrayList<>());
+        }
+        for(int j = 0; j < 4; j++){
+            //char c = (char)('A' + ((int)(Math.random()* 26)));
+            letterGrid.get(j).add(new Character((char)('A' + ((int)(Math.random()* 26)))));
+            letterGrid.get(j).add(new Character((char)('A' + ((int)(Math.random()* 26)))));
+            letterGrid.get(j).add(new Character((char)('A' + ((int)(Math.random()* 26)))));
+            letterGrid.get(j).add(new Character((char)('A' + ((int)(Math.random()* 26)))));
+        }
     }
 
     private void generateGuaranteedWords() {
@@ -68,7 +83,7 @@ public class GameInstance {
 
     private void generateLetterGrid() {
         SquareCoordinateGenerator scg = new SquareCoordinateGenerator(4);
-        ArrayList<Coordinate> coordList = new ArrayList<>();
+        ArrayList<Coordinate> coordList;
         coordList = scg.getCoordinateList();
 
         for(int i = 0; i < guaranteedWords.size(); i++) {
@@ -95,7 +110,14 @@ public class GameInstance {
                 }
                 //pick a random one from valid adjacency coord
                 int randomAdjIndex = (int) (Math.random() * validAdjacencyCoord.size());
-                
+                Coordinate randomCoord = validAdjacencyCoord.get(randomAdjIndex);
+                for(int l = 0; l < coordList.size(); l++){
+                    if(coordList.get(l).equals(randomCoord)){
+                        randomCoord = randomCoord.setFlagged(true);
+                        coordList.set(l, randomCoord);
+                        letterGrid.get(randomCoord.getX()).set(randomCoord.getY(), new Character(guaranteedWords.get(i).charAt(j)));
+                    }
+                }
             }
         }
     }
