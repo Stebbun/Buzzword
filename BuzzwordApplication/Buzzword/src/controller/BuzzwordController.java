@@ -208,8 +208,33 @@ public class BuzzwordController implements FileController{
             workspace.getTargetBox().getChildren().set(1, new Label(Integer.toString(gameInstance.getTargetScore())));
             workspace.getTargetBox().getChildren().get(1).getStyleClass().add("target");
 
+            //handle replay button
+            workspace.getReplayLabel().setOnMouseClicked(e ->{
+                this.handlePause();
+            });
+
             play();
         }
+    }
+
+    public void handlePause() {
+        Workspace workspace = (Workspace) appTemplate.getWorkspaceComponent();
+        if(gameInstance.isPaused() == false) {
+            workspace.getCurrentPane().getChildren().add(workspace.getPausePane());
+            gameInstance.setPaused(true);
+        }
+        else{
+            workspace.getCurrentPane().getChildren().remove(workspace.getPausePane());
+            gameInstance.setPaused(false);
+        }
+    }
+
+    public void handleExitFromGame(){
+        
+    }
+
+    public void handleExitGeneral(){
+
     }
 
     private void gameplayLetterGrid() {

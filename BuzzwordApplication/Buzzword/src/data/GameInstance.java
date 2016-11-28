@@ -26,6 +26,7 @@ public class GameInstance {
     private int targetScore;
     private int currentScore;
     private String currentGuess;
+    private boolean isPaused;
 
     public GameInstance(GameMode gameModeSelected, Level levelSelected) {
         this.gameModeSelected = gameModeSelected;
@@ -40,6 +41,7 @@ public class GameInstance {
         generateTargetScore();
         currentScore = 0;
         currentGuess = "";
+        isPaused = false;
     }
 
     private void initializeLetterGrid(){
@@ -154,6 +156,22 @@ public class GameInstance {
 
     public ArrayList<ArrayList<Character>> getLetterGrid() {
         return letterGrid;
+    }
+
+    public ArrayList<String> getGuaranteedWords() {
+        return guaranteedWords;
+    }
+
+    public void setGuaranteedWords(ArrayList<String> guaranteedWords) {
+        this.guaranteedWords = guaranteedWords;
+    }
+
+    public boolean isPaused() {
+        return isPaused;
+    }
+
+    public void setPaused(boolean paused) {
+        isPaused = paused;
     }
 
     public void setLetterGrid(ArrayList<ArrayList<Character>> letterGrid) {

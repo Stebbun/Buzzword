@@ -73,6 +73,7 @@ public class Workspace extends AppWorkspaceComponent {
     Button homeButton; //returns to homeLoggedScreen
 
     Pane linePane;
+    Pane pausePane;
 
     Label categoryLabel;
     HBox timePane;
@@ -206,6 +207,12 @@ public class Workspace extends AppWorkspaceComponent {
         profileBox = new ChoiceBox<String>();
 
         gameModesBox = new ChoiceBox<String>();
+        pausePane = new StackPane();
+        pausePane.setMinWidth(600);
+        pausePane.setMinHeight(600);
+        pausePane.getStyleClass().add("pause-pane");
+        pausePane.getChildren().add(new Label("PAUSED"));
+        pausePane.getChildren().get(0).getStyleClass().add("pause-font");
 
 
         workspace = new StackPane();//bottom layer is application, top layer is login
@@ -381,8 +388,12 @@ public class Workspace extends AppWorkspaceComponent {
                     controller.handleLevelSelection(selectedIindex*4 + selectedJindex);
                 });
             }*/
-
-
+        exitLabel.setOnMouseClicked(e ->{
+            if(state == GameState.GAMEPLAY_SCREEN)
+                controller.handleExitFromGame();
+            else
+                controller.handleExitGeneral();
+        });
     }
 
     public void reinitialize(){
@@ -729,6 +740,14 @@ public class Workspace extends AppWorkspaceComponent {
 
     public void setMenuBox(VBox menuBox) {
         this.menuBox = menuBox;
+    }
+
+    public Pane getPausePane() {
+        return pausePane;
+    }
+
+    public void setPausePane(Pane pausePane) {
+        this.pausePane = pausePane;
     }
 
     public Pane getHomeScreenPane() {
