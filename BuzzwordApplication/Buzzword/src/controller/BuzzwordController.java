@@ -12,6 +12,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import propertymanager.PropertyManager;
 import ui.AppMessageDialogSingleton;
+import ui.YesNoCancelDialogSingleton;
 
 import java.io.File;
 import java.io.IOException;
@@ -171,7 +172,7 @@ public class BuzzwordController implements FileController{
 
         for(int i = 0; i < 2; i++)
             for(int j = 0; j < 4; j++) {
-                if(gameData.getProfile().getGameModes().get(selectedModeIndex).getMaxCompletedLevel() > (i*4 + j)) {
+                if(gameData.getProfile().getGameModes().get(selectedModeIndex).getMaxCompletedLevel() >= (i*4 + j)) {
                     workspace.getLevelNodes().get(i).get(j).getChildren().get(0).getStyleClass().add("circle-enabled");
                     workspace.getLevelNodes().get(i).get(j).getChildren().get(1).getStyleClass().add("letter-label-enabled");
                 }
@@ -188,6 +189,10 @@ public class BuzzwordController implements FileController{
                     this.handleLevelSelection(Integer.parseInt(lab.getText()));
                 });
             }
+        workspace.getHomeButton().setOnAction(e ->{
+            workspace.setState(GameState.HOME_SCREEN_LOGGED);
+            workspace.reinitialize();
+        });
     }
 
     public void handleLevelSelection(int levelIndex){
@@ -213,6 +218,8 @@ public class BuzzwordController implements FileController{
                 this.handlePause();
             });
 
+            workspace.getLevelLabel().setText("Level " + Integer.toString(levelIndex + 1));
+
             play();
         }
     }
@@ -230,11 +237,19 @@ public class BuzzwordController implements FileController{
     }
 
     public void handleExitFromGame(){
+        Workspace workspace = (Workspace) appTemplate.getWorkspaceComponent();
+        PropertyManager propertyManager = PropertyManager.getManager();
+        YesNoCancelDialogSingleton yesNoDialog = YesNoCancelDialogSingleton.getSingleton();
+        yesNoDialog.show(propertyManager.getPropertyValue(SURE_CLOSE_TITLE),
+                propertyManager.getPropertyValue(SURE_CLOSE_MESSAGE));
 
+        if(yesNoDialog.getSelection().equals(YesNoCancelDialogSingleton.YES))
+            System.exit(0);
     }
 
     public void handleExitGeneral(){
-
+        Workspace workspace = (Workspace) appTemplate.getWorkspaceComponent();
+        System.exit(0);
     }
 
     private void gameplayLetterGrid() {
