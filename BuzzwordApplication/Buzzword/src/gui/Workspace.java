@@ -289,6 +289,9 @@ public class Workspace extends AppWorkspaceComponent {
                 lineArrayList.get(lineCounter).setEndY(180 + (j*140));
             }
 
+        //draw diagonal
+
+
 
         for(int i = 0; i < lineArrayList.size(); i++)
             linePane.getChildren().add(lineArrayList.get(i));

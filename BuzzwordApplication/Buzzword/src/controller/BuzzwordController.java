@@ -7,6 +7,8 @@ import data.GameMode;
 import data.Profile;
 import gui.GameState;
 import gui.Workspace;
+import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
@@ -263,7 +265,24 @@ public class BuzzwordController implements FileController{
     }
 
     public void play(){
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        
+                    }
+                });
+            }
 
+            @Override
+            public void stop() {
+                super.stop();
+                //end method
+            }
+        };
+        timer.start();
     }
 
     private void save(Path target) throws IOException {
