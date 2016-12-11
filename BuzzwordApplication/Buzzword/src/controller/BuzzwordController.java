@@ -280,6 +280,18 @@ public class BuzzwordController implements FileController{
     public void play(){
         Workspace workspace = (Workspace) appTemplate.getWorkspaceComponent();
         workspace.getCurrentTimeLabel().setText(Integer.toString(gameInstance.getCurrentTimer()));
+
+        Timeline tl = new Timeline();
+        tl.setCycleCount(Timeline.INDEFINITE);
+        tl.getKeyFrames().add(new KeyFrame(Duration.seconds(1), (EventHandler) e ->{
+            gameInstance.decrementTimer();
+            int currentTimer = gameInstance.getCurrentTimer();
+            workspace.getCurrentTimeLabel().setText(Integer.toString(currentTimer));
+            if(currentTimer <= 0){
+                tl.stop();
+            }
+        }));
+        tl.playFromStart();
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -358,12 +370,6 @@ public class BuzzwordController implements FileController{
                                 });
                             }
                         }
-                        //handle timer
-                        Timeline tl = new Timeline();
-                        tl.setCycleCount(Timeline.INDEFINITE);
-                        tl.getKeyFrames().add(new KeyFrame(Duration.seconds(1), (EventHandler) e ->{
-
-                        }));
                     }
                 });
             }

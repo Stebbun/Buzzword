@@ -166,6 +166,10 @@ public class GameInstance {
         }
     }
 
+    public void decrementTimer(){
+        currentTimer--;
+    }
+
     public void addValidWord(String word){
         wordsGuessed.add(word);
     }
