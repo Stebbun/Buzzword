@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 
 import static settings.AppPropertyType.*;
 
@@ -34,6 +35,7 @@ public class BuzzwordController implements FileController{
     public static GameData gameData;
     private int selectedIindex;
     private int selectedJindex;
+    private boolean temp;
 
     public BuzzwordController(AppTemplate appTemplate) {
         this.appTemplate = appTemplate;
@@ -271,7 +273,30 @@ public class BuzzwordController implements FileController{
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
-                        
+                        Workspace workspace = (Workspace) appTemplate.getWorkspaceComponent();
+                        ArrayList<List<StackPane>> letterNodes = workspace.getLetterNodes();
+                        for(int i = 0; i < letterNodes.size(); i++){
+                            for(int j = 0; j < letterNodes.get(i).size(); j++){
+                                StackPane letterNode = letterNodes.get(i).get(j);
+                                letterNode.setOnDragDetected(e ->{
+                                    System.out.println("a");
+                                    temp = false;   //drag is detected when selecting the first letter; disable mouse drag entered
+                                    letterNode.startFullDrag();
+                                });
+                                letterNode.setOnMouseDragEntered(e ->{
+                                    if(temp) {
+                                        System.out.println("b");
+                                        temp = false;
+                                    }
+                                });
+                                letterNode.setOnMouseDragReleased(e ->{
+                                    System.out.println("c");
+                                });
+                                letterNode.setOnMouseDragExited(e ->{
+                                    temp = true;    //mouse has left the node,
+                                });
+                            }
+                        }
                     }
                 });
             }
@@ -279,10 +304,14 @@ public class BuzzwordController implements FileController{
             @Override
             public void stop() {
                 super.stop();
-                //end method
+                end();
             }
         };
         timer.start();
+    }
+
+    private void end() {
+
     }
 
     private void save(Path target) throws IOException {
