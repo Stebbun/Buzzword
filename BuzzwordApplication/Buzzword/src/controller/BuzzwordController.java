@@ -1,10 +1,7 @@
 package controller;
 
 import apptemplate.AppTemplate;
-import data.GameData;
-import data.GameInstance;
-import data.GameMode;
-import data.Profile;
+import data.*;
 import gui.GameState;
 import gui.Workspace;
 import javafx.animation.AnimationTimer;
@@ -298,6 +295,11 @@ public class BuzzwordController implements FileController{
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
+                        if(gameInstance.getCurrentTimer() <= 0){
+                            won = false;
+                            stop();
+                        }
+
                         Workspace workspace = (Workspace) appTemplate.getWorkspaceComponent();
                         ArrayList<List<StackPane>> letterNodes = workspace.getLetterNodes();
                         for(int i = 0; i < letterNodes.size(); i++){
@@ -360,7 +362,6 @@ public class BuzzwordController implements FileController{
                                     updateCurrentGuessGUI();
                                     if(gameInstance.getCurrentScore() >= gameInstance.getTargetScore()){
                                         won = true;
-                                        System.out.println("won");
                                         stop();
                                     }
                                 });
@@ -386,12 +387,25 @@ public class BuzzwordController implements FileController{
     private void end() {
         PropertyManager propertyManager = PropertyManager.getManager();
         AppMessageDialogSingleton messageDialog = AppMessageDialogSingleton.getSingleton();
+        Workspace workspace = (Workspace) appTemplate.getWorkspaceComponent();
+        workspace.setState(GameState.HOME_SCREEN_LOGGED);
+        workspace.reinitialize();
 
-        if(won){
+        if(won) {
             //update gameData
             messageDialog.show(propertyManager.getPropertyValue(GAME_RESULT_TITLE),
                     propertyManager.getPropertyValue(GAME_WIN_MESSAGE));
 
+            for(int i = 0; i < gameData.getProfile().getGameModes().size(); i++){
+                if(gameData.getProfile().getGameModes().get(i).equals(gameInstance.getGameModeSelected())){
+                    for(int j = 0; j < gameData.getProfile().getGameModes().get(i).getLevels().size(); j++)
+                        if(gameData.getProfile().getGameModes().get(i).getLevels().get(j).equals(gameInstance.getLevelSelected())){
+                            //j is the level that was completed
+                            int levelUnlocked = j + 1;
+                            gameData.getProfile().getGameModes().get(i).setMaxCompletedLevel(levelUnlocked);
+                        }
+                }
+            }
         }
         else{
             messageDialog.show(propertyManager.getPropertyValue(GAME_RESULT_TITLE),

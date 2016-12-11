@@ -50,4 +50,25 @@ public class Level {
     public void setTargetScore(int targetScore) {
         this.targetScore = targetScore;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Level level = (Level) o;
+
+        if (completed != level.completed) return false;
+        if (targetScore != level.targetScore) return false;
+        return words != null ? words.equals(level.words) : level.words == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (completed ? 1 : 0);
+        result = 31 * result + (words != null ? words.hashCode() : 0);
+        result = 31 * result + targetScore;
+        return result;
+    }
 }
