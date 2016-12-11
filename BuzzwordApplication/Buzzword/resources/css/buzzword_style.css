@@ -51,6 +51,16 @@
     -fx-fill: #616263;
 }
 
+.line{
+    -fx-stroke-width: 5;
+    -fx-stroke: #484949;
+}
+
+.line-selected{
+    -fx-stroke-width: 5;
+    -fx-stroke: #42f445;
+}
+
 .node-selected{
     -fx-fill: #42f445;
 }

@@ -268,8 +268,11 @@ public class Workspace extends AppWorkspaceComponent {
         linePane.setMinWidth(600);
 
         ArrayList<Line> lineArrayList = new ArrayList<Line>();
-        for(int i = 0; i < 42; i++)
-            lineArrayList.add(new Line());
+        for(int i = 0; i < 42; i++) {
+            Line line = new Line();
+            line.getStyleClass().add("line");
+            lineArrayList.add(line);
+        }
 
         int lineCounter = 0;
         //draw horizontal
@@ -407,8 +410,9 @@ public class Workspace extends AppWorkspaceComponent {
         }
 
 
-        for(int i = 0; i < lineArrayList.size(); i++)
+        for(int i = 0; i < lineArrayList.size(); i++) {
             linePane.getChildren().add(lineArrayList.get(i));
+        }
     }
 
     private void buildDemoLevelSelect(){

@@ -14,8 +14,10 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.util.Duration;
 import propertymanager.PropertyManager;
 import ui.AppMessageDialogSingleton;
@@ -398,6 +400,12 @@ public class BuzzwordController implements FileController{
                                             workspace.getLetterNodes().get(x).get(y).getChildren().get(1).getStyleClass().add("letter-label");
                                         }
                                     }
+                                    Pane linePane = workspace.getLinePane();
+                                    for(int p = 0; p < linePane.getChildren().size(); p++) {
+                                        Line line = (Line) linePane.getChildren().get(p);
+                                        line.getStyleClass().clear();
+                                        line.getStyleClass().add("line");
+                                    }
                                     gameInstance.resetFlaggedGrid();
                                     gameInstance.clearGuess();
                                     updateCurrentGuessGUI();
@@ -412,6 +420,16 @@ public class BuzzwordController implements FileController{
                                 });
                             }
                         }
+
+                        Pane linePane = workspace.getLinePane();
+                        for(int i = 0; i < linePane.getChildren().size(); i++){
+                            Line line = (Line) linePane.getChildren().get(i);
+                            line.setOnMouseDragOver(e ->{
+                                line.getStyleClass().clear();
+                                line.getStyleClass().add("line-selected");
+                            });
+                        }
+
                         //typing portion
                         appTemplate.getGUI().getPrimaryScene().setOnKeyTyped((KeyEvent event) -> {
                             if(event.getCode().equals(KeyCode.ENTER) || event.getCharacter().equals("\r")){
