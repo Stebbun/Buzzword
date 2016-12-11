@@ -11,6 +11,8 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
@@ -23,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -119,6 +122,22 @@ public class BuzzwordController implements FileController{
         if(workspace.getState() == GameState.HOME_SCREEN_LOG_PROMPT){
             String username = workspace.getLoginField().getText();
             String password = workspace.getPasswordField().getText();
+
+            try {
+                MessageDigest md = MessageDigest.getInstance("SHA-256");
+                md.update(password.getBytes());
+
+                byte bytes[] = md.digest();
+                StringBuffer buffer = new StringBuffer();
+                for (int i = 0; i < bytes.length; i++) {
+                    buffer.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+                }
+
+                password = buffer.toString();
+            }
+            catch(Exception e){
+                e.printStackTrace();
+            }
 
             File base = new File("");
             String fullPath = base.getAbsolutePath() + "/Buzzword/saved/" + username + ".json";
@@ -282,11 +301,16 @@ public class BuzzwordController implements FileController{
         Timeline tl = new Timeline();
         tl.setCycleCount(Timeline.INDEFINITE);
         tl.getKeyFrames().add(new KeyFrame(Duration.seconds(1), (EventHandler) e ->{
-            gameInstance.decrementTimer();
-            int currentTimer = gameInstance.getCurrentTimer();
-            workspace.getCurrentTimeLabel().setText(Integer.toString(currentTimer));
-            if(currentTimer <= 0){
-                tl.stop();
+            if(!gameInstance.isPaused()) {
+                gameInstance.decrementTimer();
+                int currentTimer = gameInstance.getCurrentTimer();
+                workspace.getCurrentTimeLabel().setText(Integer.toString(currentTimer));
+                if (currentTimer <= 0) {
+                    tl.stop();
+                }
+            }
+            else{
+                //do nothing
             }
         }));
         tl.playFromStart();
@@ -314,6 +338,10 @@ public class BuzzwordController implements FileController{
                                     for(int k = 0; k < gridPaneTemp.getChildren().size(); k++)
                                         if(gridPaneTemp.getChildren().get(k).equals(letterNode))
                                             flaggedIndex = k;
+                                    letterNode.getChildren().get(0).getStyleClass().clear();
+                                    letterNode.getChildren().get(1).getStyleClass().clear();
+                                    letterNode.getChildren().get(0).getStyleClass().add("node-selected");
+                                    letterNode.getChildren().get(1).getStyleClass().add("node-selected-text");
                                     gameInstance.setFlagCell(flaggedIndex);
                                     gameInstance.makeAdjacencyGrid(flaggedIndex);
                                     Label labelTemp = (Label) letterNode.getChildren().get(1);
@@ -328,6 +356,10 @@ public class BuzzwordController implements FileController{
                                         if(gridPaneTemp.getChildren().get(k).equals(letterNode))
                                             flaggedIndex = k;
                                     if(temp && !gameInstance.getFlagCell(flaggedIndex) && gameInstance.getAdjacencyCell(flaggedIndex)) {
+                                        letterNode.getChildren().get(0).getStyleClass().clear();
+                                        letterNode.getChildren().get(1).getStyleClass().clear();
+                                        letterNode.getChildren().get(0).getStyleClass().add("node-selected");
+                                        letterNode.getChildren().get(1).getStyleClass().add("node-selected-text");
                                         temp = false;
                                         Label labelTemp = (Label) letterNode.getChildren().get(1);
                                         Character c = new Character(labelTemp.getText().charAt(0));
@@ -358,6 +390,14 @@ public class BuzzwordController implements FileController{
                                         workspace.getTotalScoreBox().add(new Label(Integer.toString(gameInstance.getCurrentScore())), 1, 0);
                                         workspace.getTotalScoreBox().getChildren().get(1).getStyleClass().add("total");
                                     }
+                                    for(int x = 0; x < workspace.getLetterNodes().size(); x++){
+                                        for(int y = 0; y < workspace.getLetterNodes().get(x).size(); y++){
+                                            workspace.getLetterNodes().get(x).get(y).getChildren().get(0).getStyleClass().clear();
+                                            workspace.getLetterNodes().get(x).get(y).getChildren().get(0).getStyleClass().add("circle");
+                                            workspace.getLetterNodes().get(x).get(y).getChildren().get(1).getStyleClass().clear();
+                                            workspace.getLetterNodes().get(x).get(y).getChildren().get(1).getStyleClass().add("letter-label");
+                                        }
+                                    }
                                     gameInstance.resetFlaggedGrid();
                                     gameInstance.clearGuess();
                                     updateCurrentGuessGUI();
@@ -372,6 +412,71 @@ public class BuzzwordController implements FileController{
                                 });
                             }
                         }
+                        //typing portion
+                        appTemplate.getGUI().getPrimaryScene().setOnKeyTyped((KeyEvent event) -> {
+                            if(event.getCode().equals(KeyCode.ENTER) || event.getCharacter().equals("\r")){
+                                //if enter
+                                if(gameInstance.getValidWords().contains(gameInstance.getCurrentGuess())
+                                        && !gameInstance.getWordsGuessed().contains(gameInstance.getCurrentGuess())){
+                                    gameInstance.addValidWord(gameInstance.getCurrentGuess());
+                                    int row = gameInstance.getWordsGuessed().size() - 1;
+                                    int points = 0;
+                                    if(gameInstance.getCurrentGuess().length() >= 5)
+                                        points = gameInstance.getCurrentGuess().length() * 15;
+                                    else
+                                        points = gameInstance.getCurrentGuess().length() * 10;
+                                    gameInstance.incrementCurrentScore(points);
+                                    workspace.getWordGrid().add(new Label(gameInstance.getCurrentGuess()), 0, row);
+                                    workspace.getWordGrid().add(new Label(Integer.toString(points)), 1, row);
+                                    for(int k = 0; k < workspace.getWordGrid().getChildren().size(); k++){
+                                        workspace.getWordGrid().getChildren().get(k).getStyleClass().add("words");
+                                    }
+                                    workspace.getTotalScoreBox().getChildren().remove(1);
+                                    workspace.getTotalScoreBox().add(new Label(Integer.toString(gameInstance.getCurrentScore())), 1, 0);
+                                    workspace.getTotalScoreBox().getChildren().get(1).getStyleClass().add("total");
+                                }
+                                gameInstance.setFirstTimeTyped(true);
+                                gameInstance.resetFlaggedGrid();
+                                gameInstance.clearGuess();
+                                updateCurrentGuessGUI();
+                                if(gameInstance.getCurrentScore() >= gameInstance.getTargetScore()){
+                                    won = true;
+                                    stop();
+                                }
+                            }
+                            else {
+                                Character letter = event.getCharacter().toUpperCase().charAt(0);
+                                boolean isAddedThisLoop = false;
+
+                                for (int i = 0; i < gameInstance.getLetterGrid().size(); i++) {
+                                    for (int j = 0; j < gameInstance.getLetterGrid().get(i).size(); j++) {
+                                        if (letter.equals(gameInstance.getLetterGrid().get(i).get(j))) {
+                                            if (gameInstance.isFirstTimeTyped()) {
+                                                if(!isAddedThisLoop) {
+                                                    gameInstance.appendLetter(letter);
+                                                    isAddedThisLoop = true;
+                                                }
+                                                gameInstance.setFirstTimeTyped(false);
+                                                gameInstance.setFlagCell(i*4 + j);
+                                                gameInstance.makeAdjacencyGrid(i*4 + j);
+                                                updateCurrentGuessGUI();
+                                            }
+                                            else if(gameInstance.getAdjacencyCell(i*4 + j)){
+                                                if(!isAddedThisLoop) {
+                                                    gameInstance.appendLetter(letter);
+                                                    isAddedThisLoop = true;
+                                                }
+                                                gameInstance.setFirstTimeTyped(false);
+                                                gameInstance.setFlagCell(i*4 + j);
+                                                gameInstance.makeAdjacencyGrid(i*4 + j);
+                                                updateCurrentGuessGUI();
+                                            }
+                                        }
+                                    }
+                                }
+
+                            }
+                        });
                     }
                 });
             }

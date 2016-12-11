@@ -28,6 +28,7 @@ public class GameInstance {
     private int currentScore;
     private String currentGuess;
     private boolean isPaused;
+    private boolean firstTimeTyped;
 
     public GameInstance(GameMode gameModeSelected, Level levelSelected) {
         this.gameModeSelected = gameModeSelected;
@@ -43,6 +44,7 @@ public class GameInstance {
         currentScore = 0;
         currentGuess = "";
         isPaused = false;
+        firstTimeTyped = true;
     }
 
     private void initializeLetterGrid(){
@@ -337,5 +339,21 @@ public class GameInstance {
         int i = pos / 4;
         int j = pos % 4;
         return adjacencyGrid[i][j];
+    }
+
+    public boolean[][] getAdjacencyGrid() {
+        return adjacencyGrid;
+    }
+
+    public void setAdjacencyGrid(boolean[][] adjacencyGrid) {
+        this.adjacencyGrid = adjacencyGrid;
+    }
+
+    public boolean isFirstTimeTyped() {
+        return firstTimeTyped;
+    }
+
+    public void setFirstTimeTyped(boolean firstTimeTyped) {
+        this.firstTimeTyped = firstTimeTyped;
     }
 }

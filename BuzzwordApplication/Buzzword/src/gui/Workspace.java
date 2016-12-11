@@ -290,7 +290,121 @@ public class Workspace extends AppWorkspaceComponent {
             }
 
         //draw diagonal
+        //from top left to bottom right
+        //least diagonal
+        double x1 = 90 + 25*Math.sqrt(2);
+        double y1 = 370 + 25*Math.sqrt(2);
+        double x2 = 230 - 25*Math.sqrt(2);
+        double y2 = 510 - 25*Math.sqrt(2);
+        for(int i = 0; i < 1; i++, lineCounter++) {
+            lineArrayList.get(lineCounter).setStartX(x1 + (140*i));
+            lineArrayList.get(lineCounter).setStartY(y1 + (140*i));
+            lineArrayList.get(lineCounter).setEndX(x2 + (140*i));
+            lineArrayList.get(lineCounter).setEndY(y2 + (140*i));
+        }
+        //lesser diagonal
+        x1 = 90 + 25*Math.sqrt(2);
+        y1 = 230 + 25*Math.sqrt(2);
+        x2 = 230 - 25*Math.sqrt(2);
+        y2 = 370 - 25*Math.sqrt(2);
+        for(int i = 0; i < 2; i++, lineCounter++) {
+            lineArrayList.get(lineCounter).setStartX(x1 + (140*i));
+            lineArrayList.get(lineCounter).setStartY(y1 + (140*i));
+            lineArrayList.get(lineCounter).setEndX(x2 + (140*i));
+            lineArrayList.get(lineCounter).setEndY(y2 + (140*i));
+        }
 
+        //main diagonal
+        x1 = 90 + 25*Math.sqrt(2);
+        y1 = 90 + 25*Math.sqrt(2);
+        x2 = 230 - 25*Math.sqrt(2);
+        y2 = 230 - 25*Math.sqrt(2);
+        for(int i = 0; i < 3; i++, lineCounter++) {
+            lineArrayList.get(lineCounter).setStartX(x1 + (140*i));
+            lineArrayList.get(lineCounter).setStartY(y1 + (140*i));
+            lineArrayList.get(lineCounter).setEndX(x2 + (140*i));
+            lineArrayList.get(lineCounter).setEndY(y2 + (140*i));
+        }
+        //upper diagonal
+        x1 = 230 + 25*Math.sqrt(2);
+        y1 = 90 + 25*Math.sqrt(2);
+        x2 = 370 - 25*Math.sqrt(2);
+        y2 = 230 - 25*Math.sqrt(2);
+        for(int i = 0; i < 2; i++, lineCounter++) {
+            lineArrayList.get(lineCounter).setStartX(x1 + (140*i));
+            lineArrayList.get(lineCounter).setStartY(y1 + (140*i));
+            lineArrayList.get(lineCounter).setEndX(x2 + (140*i));
+            lineArrayList.get(lineCounter).setEndY(y2 + (140*i));
+        }
+
+        //uppest diagonal
+        x1 = 370 + 25*Math.sqrt(2);
+        y1 = 90 + 25*Math.sqrt(2);
+        x2 = 510 - 25*Math.sqrt(2);
+        y2 = 230 - 25*Math.sqrt(2);
+        for(int i = 0; i < 1; i++, lineCounter++) {
+            lineArrayList.get(lineCounter).setStartX(x1 + (140*i));
+            lineArrayList.get(lineCounter).setStartY(y1 + (140*i));
+            lineArrayList.get(lineCounter).setEndX(x2 + (140*i));
+            lineArrayList.get(lineCounter).setEndY(y2 + (140*i));
+        }
+
+        //from bottom left to top right
+        //uppest diagonal
+        x1 = 90 + 25*Math.sqrt(2);
+        y1 = 230 - 25*Math.sqrt(2);
+        x2 = 230 - 25*Math.sqrt(2);
+        y2 = 90 + 25*Math.sqrt(2);
+        for(int i = 0; i < 1; i++, lineCounter++) {
+            lineArrayList.get(lineCounter).setStartX(x1 + (140*i));
+            lineArrayList.get(lineCounter).setStartY(y1 - (140*i));
+            lineArrayList.get(lineCounter).setEndX(x2 + (140*i));
+            lineArrayList.get(lineCounter).setEndY(y2 - (140*i));
+        }
+        //upper diagonal
+        x1 = 90 + 25*Math.sqrt(2);
+        y1 = 370 - 25*Math.sqrt(2);
+        x2 = 230 - 25*Math.sqrt(2);
+        y2 = 230 + 25*Math.sqrt(2);
+        for(int i = 0; i < 2; i++, lineCounter++) {
+            lineArrayList.get(lineCounter).setStartX(x1 + (140*i));
+            lineArrayList.get(lineCounter).setStartY(y1 - (140*i));
+            lineArrayList.get(lineCounter).setEndX(x2 + (140*i));
+            lineArrayList.get(lineCounter).setEndY(y2 - (140*i));
+        }
+        //main diagonal
+        x1 = 90 + 25*Math.sqrt(2);
+        y1 = 510 - 25*Math.sqrt(2);
+        x2 = 230 - 25*Math.sqrt(2);
+        y2 = 370 + 25*Math.sqrt(2);
+        for(int i = 0; i < 3; i++, lineCounter++) {
+            lineArrayList.get(lineCounter).setStartX(x1 + (140*i));
+            lineArrayList.get(lineCounter).setStartY(y1 - (140*i));
+            lineArrayList.get(lineCounter).setEndX(x2 + (140*i));
+            lineArrayList.get(lineCounter).setEndY(y2 - (140*i));
+        }
+        //lower diagonal
+        x1 = 230 + 25*Math.sqrt(2);
+        y1 = 510 - 25*Math.sqrt(2);
+        x2 = 370 - 25*Math.sqrt(2);
+        y2 = 370 + 25*Math.sqrt(2);
+        for(int i = 0; i < 2; i++, lineCounter++) {
+            lineArrayList.get(lineCounter).setStartX(x1 + (140*i));
+            lineArrayList.get(lineCounter).setStartY(y1 - (140*i));
+            lineArrayList.get(lineCounter).setEndX(x2 + (140*i));
+            lineArrayList.get(lineCounter).setEndY(y2 - (140*i));
+        }
+        //lowest diagonal
+        x1 = 370 + 25*Math.sqrt(2);
+        y1 = 510 - 25*Math.sqrt(2);
+        x2 = 510 - 25*Math.sqrt(2);
+        y2 = 370 + 25*Math.sqrt(2);
+        for(int i = 0; i < 1; i++, lineCounter++) {
+            lineArrayList.get(lineCounter).setStartX(x1 + (140*i));
+            lineArrayList.get(lineCounter).setStartY(y1 - (140*i));
+            lineArrayList.get(lineCounter).setEndX(x2 + (140*i));
+            lineArrayList.get(lineCounter).setEndY(y2 - (140*i));
+        }
 
 
         for(int i = 0; i < lineArrayList.size(); i++)

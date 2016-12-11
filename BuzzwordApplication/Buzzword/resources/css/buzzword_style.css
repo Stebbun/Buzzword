@@ -51,8 +51,12 @@
     -fx-fill: #616263;
 }
 
-.circle{
-    -fx-fill: #616263;
+.node-selected{
+    -fx-fill: #42f445;
+}
+
+.node-selected-text{
+    -fx-text-fill: #000000;
 }
 
 .circle-enabled{

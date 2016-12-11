@@ -1,6 +1,7 @@
 package data;
 
 import java.io.*;
+import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -19,8 +20,26 @@ public class Profile {
 
     public Profile(String username, String password){
         this.username = username;
-        this.password = password;
+        generatePasswordHash(password);
         generateInitData();
+    }
+
+    private void generatePasswordHash(String pass) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            md.update(pass.getBytes());
+
+            byte bytes[] = md.digest();
+            StringBuffer buffer = new StringBuffer();
+            for (int i = 0; i < bytes.length; i++) {
+                buffer.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+            }
+
+            password = buffer.toString();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void generateInitData() {
