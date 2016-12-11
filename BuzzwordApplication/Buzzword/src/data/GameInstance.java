@@ -18,6 +18,7 @@ public class GameInstance {
     private GameMode gameModeSelected;
     private Level levelSelected;
     private ArrayList<ArrayList<Character>> letterGrid;
+    private boolean[][] flaggedGrid;
     private int currentTimer;
     private ArrayList<String> guaranteedWords;
     private Set<String> validWords;
@@ -30,6 +31,7 @@ public class GameInstance {
     public GameInstance(GameMode gameModeSelected, Level levelSelected) {
         this.gameModeSelected = gameModeSelected;
         this.levelSelected = levelSelected;
+        initializeFlaggedGrid();
         generateTargetScore();
         generateGuaranteedWords();
         initializeLetterGrid();
@@ -40,6 +42,10 @@ public class GameInstance {
         currentScore = 0;
         currentGuess = "";
         isPaused = false;
+    }
+
+    private void initializeFlaggedGrid() {
+        flaggedGrid = new boolean[4][4];
     }
 
     private void initializeLetterGrid(){
@@ -163,6 +169,14 @@ public class GameInstance {
         }
     }
 
+    public void appendLetter(Character c){
+        currentGuess += c;
+    }
+
+    public void clearGuess(){
+        currentGuess = "";
+    }
+
     public GameMode getGameModeSelected() {
         return gameModeSelected;
     }
@@ -249,5 +263,29 @@ public class GameInstance {
 
     public void setCurrentGuess(String currentGuess) {
         this.currentGuess = currentGuess;
+    }
+
+    public boolean[][] getFlaggedGrid() {
+        return flaggedGrid;
+    }
+
+    public void setFlaggedGrid(boolean[][] flaggedGrid) {
+        this.flaggedGrid = flaggedGrid;
+    }
+
+    public void setFlagCell(int position){
+        int i = position / 4;
+        int j = position % 4;
+        flaggedGrid[i][j] = true;
+    }
+
+    public boolean getFlagCell(int position){
+        int i = position / 4;
+        int j = position % 4;
+        return flaggedGrid[i][j];
+    }
+
+    public void resetFlaggedGrid(){
+        flaggedGrid = new boolean[4][4];
     }
 }

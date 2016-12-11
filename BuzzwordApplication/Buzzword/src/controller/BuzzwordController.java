@@ -10,6 +10,7 @@ import gui.Workspace;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import propertymanager.PropertyManager;
@@ -35,6 +36,7 @@ public class BuzzwordController implements FileController{
     public static GameData gameData;
     private int selectedIindex;
     private int selectedJindex;
+    private int flaggedIndex = 0;
     private boolean temp;
 
     public BuzzwordController(AppTemplate appTemplate) {
@@ -278,20 +280,45 @@ public class BuzzwordController implements FileController{
                         for(int i = 0; i < letterNodes.size(); i++){
                             for(int j = 0; j < letterNodes.get(i).size(); j++){
                                 StackPane letterNode = letterNodes.get(i).get(j);
+
                                 letterNode.setOnDragDetected(e ->{
+                                    letterNode.startFullDrag();
                                     System.out.println("a");
                                     temp = false;   //drag is detected when selecting the first letter; disable mouse drag entered
-                                    letterNode.startFullDrag();
+                                    GridPane gridPaneTemp = (GridPane) letterNode.getParent();
+                                    for(int k = 0; k < gridPaneTemp.getChildren().size(); k++)
+                                        if(gridPaneTemp.getChildren().get(k).equals(letterNode))
+                                            flaggedIndex = k;
+                                    gameInstance.setFlagCell(flaggedIndex);
+                                    Label labelTemp = (Label) letterNode.getChildren().get(1);
+                                    Character c = new Character(labelTemp.getText().charAt(0));
+                                    gameInstance.appendLetter(c);
+                                    updateCurrentGuessGUI();
                                 });
+
                                 letterNode.setOnMouseDragEntered(e ->{
-                                    if(temp) {
+                                    GridPane gridPaneTemp = (GridPane) letterNode.getParent();
+                                    for(int k = 0; k < gridPaneTemp.getChildren().size(); k++)
+                                        if(gridPaneTemp.getChildren().get(k).equals(letterNode))
+                                            flaggedIndex = k;
+                                    if(temp && !gameInstance.getFlagCell(flaggedIndex)) {
                                         System.out.println("b");
                                         temp = false;
+                                        Label labelTemp = (Label) letterNode.getChildren().get(1);
+                                        Character c = new Character(labelTemp.getText().charAt(0));
+                                        gameInstance.appendLetter(c);
+                                        updateCurrentGuessGUI();
                                     }
+                                    gameInstance.setFlagCell(flaggedIndex);
                                 });
+
                                 letterNode.setOnMouseDragReleased(e ->{
-                                    System.out.println("c");
+                                    System.out.println("check if guess is valid or not, then do stuff");
+                                    gameInstance.resetFlaggedGrid();
+                                    gameInstance.clearGuess();
+                                    updateCurrentGuessGUI();
                                 });
+
                                 letterNode.setOnMouseDragExited(e ->{
                                     temp = true;    //mouse has left the node,
                                 });
@@ -312,6 +339,11 @@ public class BuzzwordController implements FileController{
 
     private void end() {
 
+    }
+
+    private void updateCurrentGuessGUI(){
+        Workspace workspace = (Workspace) appTemplate.getWorkspaceComponent();
+        workspace.getCurrentGuessLabel().setText(gameInstance.getCurrentGuess());
     }
 
     private void save(Path target) throws IOException {
