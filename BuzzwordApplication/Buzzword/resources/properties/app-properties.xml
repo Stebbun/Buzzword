@@ -62,7 +62,7 @@
         <property name="SAVE_UNSAVED_WORK_TITLE" value="Save progress?"/>
         <property name="GAME_RESULT_TITLE" value="Game Result"/>
         <property name="GAME_WIN_MESSAGE" value="You win!"/>
-        <property name="GAME_LOSE_MESSAGE" value="Close! The word was "/>
+        <property name="GAME_LOSE_MESSAGE" value="You lost!"/>
 
         <property name="WORK_FILE_EXT" value="json"/>
         <property name="WORK_FILE_EXT_DESC" value="Game File"/>

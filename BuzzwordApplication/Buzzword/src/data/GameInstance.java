@@ -19,6 +19,7 @@ public class GameInstance {
     private Level levelSelected;
     private ArrayList<ArrayList<Character>> letterGrid;
     private boolean[][] flaggedGrid;
+    private boolean[][] adjacencyGrid;
     private int currentTimer;
     private ArrayList<String> guaranteedWords;
     private Set<String> validWords;
@@ -31,7 +32,7 @@ public class GameInstance {
     public GameInstance(GameMode gameModeSelected, Level levelSelected) {
         this.gameModeSelected = gameModeSelected;
         this.levelSelected = levelSelected;
-        initializeFlaggedGrid();
+        flaggedGrid = new boolean[4][4];
         generateTargetScore();
         generateGuaranteedWords();
         initializeLetterGrid();
@@ -42,10 +43,6 @@ public class GameInstance {
         currentScore = 0;
         currentGuess = "";
         isPaused = false;
-    }
-
-    private void initializeFlaggedGrid() {
-        flaggedGrid = new boolean[4][4];
     }
 
     private void initializeLetterGrid(){
@@ -80,7 +77,7 @@ public class GameInstance {
                 String words = br.readLine();
                 String[] wordArray = words.split(" ");
                 for (int i = 0; i < wordArray.length; i++)
-                    validWords.add(wordArray[i]);
+                    validWords.add(wordArray[i].toUpperCase());
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -167,6 +164,14 @@ public class GameInstance {
                 }
             }
         }
+    }
+
+    public void addValidWord(String word){
+        wordsGuessed.add(word);
+    }
+
+    public void incrementCurrentScore(int points){
+        currentScore += points;
     }
 
     public void appendLetter(Character c){
@@ -287,5 +292,46 @@ public class GameInstance {
 
     public void resetFlaggedGrid(){
         flaggedGrid = new boolean[4][4];
+    }
+
+    public void makeAdjacencyGrid(int pos){
+        //use last flagged cell position and everything around that position will be a valid adjacency
+        adjacencyGrid = new boolean[4][4];
+        //pos + 1
+        if(pos + 1 >= 0 && pos + 1 <= 15)
+            setAdjacencyCell(pos + 1);
+        //pos - 1
+        if((pos - 1) >= 0 && (pos - 1) <= 15)
+            setAdjacencyCell(pos - 1);
+        //pos - 4
+        if(pos - 4 >= 0 && pos - 4 <= 15)
+            setAdjacencyCell(pos - 4);
+        //pos - 3
+        if(pos - 3 >= 0 && pos - 3 <= 15)
+            setAdjacencyCell(pos - 3);
+        //pos - 5
+        if(pos - 5 >= 0 && pos - 5 <= 15)
+            setAdjacencyCell(pos - 5);
+        //pos + 4
+        if(pos + 4 >= 0 && pos + 4 <= 15)
+            setAdjacencyCell(pos + 4);
+        //pos + 3
+        if(pos + 3 >= 0 && pos + 3 <= 15)
+            setAdjacencyCell(pos + 3);
+        //pos + 5
+        if(pos + 5 >= 0 && pos + 5 <= 15)
+            setAdjacencyCell(pos + 5);
+    }
+
+    private void setAdjacencyCell(int pos){
+        int i = pos / 4;
+        int j = pos % 4;
+        adjacencyGrid[i][j] = true;
+    }
+
+    public boolean getAdjacencyCell(int pos){
+        int i = pos / 4;
+        int j = pos % 4;
+        return adjacencyGrid[i][j];
     }
 }
