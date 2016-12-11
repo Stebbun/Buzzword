@@ -203,6 +203,7 @@ public class BuzzwordController implements FileController{
             }
         workspace.getHomeButton().setOnAction(e ->{
             workspace.setState(GameState.HOME_SCREEN_LOGGED);
+            workspace.buildHomeGrid();
             workspace.reinitialize();
         });
     }
@@ -389,6 +390,7 @@ public class BuzzwordController implements FileController{
         AppMessageDialogSingleton messageDialog = AppMessageDialogSingleton.getSingleton();
         Workspace workspace = (Workspace) appTemplate.getWorkspaceComponent();
         workspace.setState(GameState.HOME_SCREEN_LOGGED);
+        workspace.buildHomeGrid();
         workspace.reinitialize();
 
         if(won) {
@@ -403,13 +405,25 @@ public class BuzzwordController implements FileController{
                             //j is the level that was completed
                             int levelUnlocked = j + 1;
                             gameData.getProfile().getGameModes().get(i).setMaxCompletedLevel(levelUnlocked);
+                            File base = new File("");
+                            String username = gameData.getProfile().getUsername();
+                            String fullPath = base.getAbsolutePath() + "/Buzzword/saved/" + username + ".json";
+                            try {
+                                save(Paths.get(fullPath));
+                            }
+                            catch(Exception e){
+                                e.printStackTrace();
+                            }
                         }
                 }
             }
         }
         else{
+            String words = " The words were:\n";
+            for(int i = 0; i < gameInstance.getGuaranteedWords().size(); i++)
+                words += gameInstance.getGuaranteedWords().get(i) + "\n";
             messageDialog.show(propertyManager.getPropertyValue(GAME_RESULT_TITLE),
-                    propertyManager.getPropertyValue(GAME_LOSE_MESSAGE));
+                    propertyManager.getPropertyValue(GAME_LOSE_MESSAGE) + words);
         }
     }
 

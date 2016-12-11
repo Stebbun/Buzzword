@@ -219,7 +219,7 @@ public class Workspace extends AppWorkspaceComponent {
         workspace.getChildren().add(baseHBox);
     }
 
-    private void buildHomeGrid(){
+    public void buildHomeGrid(){
 
         letterNodes = new ArrayList<List<StackPane>>();
         for(int i = 0; i < 4; i++) {
