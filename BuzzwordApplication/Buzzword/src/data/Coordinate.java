@@ -59,4 +59,12 @@ public class Coordinate {
         result = 31 * result + (flagged ? 1 : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Coordinate{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
+    }
 }

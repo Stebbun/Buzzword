@@ -29,6 +29,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static Buzzword.BuzzwordProperties.GAME_LOSE_MESSAGE;
@@ -49,9 +50,98 @@ public class BuzzwordController implements FileController{
     private int flaggedIndex = 0;
     private boolean won = false;
     private boolean temp;
+    private int lastPos;
+    private HashMap<String, Integer> lineMap;
 
     public BuzzwordController(AppTemplate appTemplate) {
         this.appTemplate = appTemplate;
+        generateLineMap();
+    }
+
+    private void generateLineMap() {
+        lineMap = new HashMap<>();
+        int pos1 = 0;
+        int pos2 = 1;
+        int pos3 = 0;
+
+        //horizontal
+        for(int i = 0; i < 4; i++, pos1++, pos2++){
+            for(int j = 0; j < 3; j++, pos1++, pos2++, pos3++){
+                Coordinate pair = new Coordinate(pos1, pos2);
+                lineMap.put(pair.toString(), pos3);
+            }
+        }
+        pos1 = 0;
+        pos2 = 4;
+        pos3 = 12;
+
+        //vertical
+        for(int i = 0; i < 3; i++){
+            for(int j = 0; j < 4; j++, pos1++, pos2++, pos3++){
+                Coordinate pair = new Coordinate(pos1, pos2);
+                lineMap.put(pair.toString(), pos3);
+            }
+        }
+
+        //diagonal manually
+        //top left to bottom right
+        //least diagonal
+        Coordinate pair = new Coordinate(8, 13);
+        lineMap.put(pair.toString(), 24);
+
+        //lesser diagonal
+        pair = new Coordinate(4, 9);
+        lineMap.put(pair.toString(), 25);
+        pair = new Coordinate(9, 14);
+        lineMap.put(pair.toString(), 26);
+
+        //main diagonal
+        pair = new Coordinate(0, 5);
+        lineMap.put(pair.toString(), 27);
+        pair = new Coordinate(5, 10);
+        lineMap.put(pair.toString(), 28);
+        pair = new Coordinate(10, 15);
+        lineMap.put(pair.toString(), 29);
+
+        //upper diagonal
+        pair = new Coordinate(1, 6);
+        lineMap.put(pair.toString(), 30);
+        pair = new Coordinate(6, 11);
+        lineMap.put(pair.toString(), 31);
+
+        //uppest diagonal
+        pair = new Coordinate(2, 7);
+        lineMap.put(pair.toString(), 32);
+
+        //bottom left to top right
+        //uppest diagonal
+        pair = new Coordinate(4, 1);
+        lineMap.put(pair.toString(), 33);
+
+        //upper diagonal
+        pair = new Coordinate(8, 5);
+        lineMap.put(pair.toString(), 34);
+        pair = new Coordinate(5, 2);
+        lineMap.put(pair.toString(), 35);
+
+        //main diagonal
+        pair = new Coordinate(12, 9);
+        lineMap.put(pair.toString(), 36);
+        pair = new Coordinate(9, 6);
+        lineMap.put(pair.toString(), 37);
+        pair = new Coordinate(6, 3);
+        lineMap.put(pair.toString(), 38);
+
+        //lower diagonal
+        pair = new Coordinate(13, 10);
+        lineMap.put(pair.toString(), 39);
+        pair = new Coordinate(10, 7);
+        lineMap.put(pair.toString(), 40);
+
+        //lowest diagonal
+        pair = new Coordinate(14, 11);
+        lineMap.put(pair.toString(), 41);
+
     }
 
     private void ensureActivatedWorkspace() {
@@ -344,6 +434,7 @@ public class BuzzwordController implements FileController{
                                     letterNode.getChildren().get(1).getStyleClass().clear();
                                     letterNode.getChildren().get(0).getStyleClass().add("node-selected");
                                     letterNode.getChildren().get(1).getStyleClass().add("node-selected-text");
+                                    lastPos = flaggedIndex;
                                     gameInstance.setFlagCell(flaggedIndex);
                                     gameInstance.makeAdjacencyGrid(flaggedIndex);
                                     Label labelTemp = (Label) letterNode.getChildren().get(1);
@@ -369,6 +460,20 @@ public class BuzzwordController implements FileController{
                                         updateCurrentGuessGUI();
                                         gameInstance.makeAdjacencyGrid(flaggedIndex);
                                         gameInstance.setFlagCell(flaggedIndex);
+                                        //enable a line based on mapping
+                                        boolean switchIt = false;
+                                        try {
+                                            Coordinate coord = new Coordinate(lastPos, flaggedIndex);
+                                            Integer value = lineMap.get(coord.toString());
+                                            workspace.getLinePane().getChildren().get(value).getStyleClass().add("line-selected");
+                                            lastPos = flaggedIndex;
+                                        }
+                                        catch(NullPointerException ex){
+                                            Coordinate coord = new Coordinate(flaggedIndex, lastPos);
+                                            Integer value = lineMap.get(coord.toString());
+                                            workspace.getLinePane().getChildren().get(value).getStyleClass().add("line-selected");
+                                            lastPos = flaggedIndex;
+                                        }
                                     }
                                 });
 
@@ -421,15 +526,6 @@ public class BuzzwordController implements FileController{
                             }
                         }
 
-                        Pane linePane = workspace.getLinePane();
-                        for(int i = 0; i < linePane.getChildren().size(); i++){
-                            Line line = (Line) linePane.getChildren().get(i);
-                            line.setOnMouseDragOver(e ->{
-                                line.getStyleClass().clear();
-                                line.getStyleClass().add("line-selected");
-                            });
-                        }
-
                         //typing portion
                         appTemplate.getGUI().getPrimaryScene().setOnKeyTyped((KeyEvent event) -> {
                             if(event.getCode().equals(KeyCode.ENTER) || event.getCharacter().equals("\r")){
@@ -453,6 +549,22 @@ public class BuzzwordController implements FileController{
                                     workspace.getTotalScoreBox().add(new Label(Integer.toString(gameInstance.getCurrentScore())), 1, 0);
                                     workspace.getTotalScoreBox().getChildren().get(1).getStyleClass().add("total");
                                 }
+                                Pane linePane = workspace.getLinePane();
+                                for(int p = 0; p < linePane.getChildren().size(); p++) {
+                                    Line line = (Line) linePane.getChildren().get(p);
+                                    line.getStyleClass().clear();
+                                    line.getStyleClass().add("line");
+                                }
+                                for (int i = 0; i < gameInstance.getLetterGrid().size(); i++) {
+                                    for (int j = 0; j < gameInstance.getLetterGrid().get(i).size(); j++) {
+                                        workspace.getLetterNodes().get(i).get(j).getChildren().get(0).getStyleClass().clear();
+                                        workspace.getLetterNodes().get(i).get(j).getChildren().get(1).getStyleClass().clear();
+                                        workspace.getLetterNodes().get(i).get(j).getChildren().get(0).getStyleClass()
+                                                .add("circle");
+                                        workspace.getLetterNodes().get(i).get(j).getChildren().get(1).getStyleClass()
+                                                .add("letter-label");
+                                    }
+                                }
                                 gameInstance.setFirstTimeTyped(true);
                                 gameInstance.resetFlaggedGrid();
                                 gameInstance.clearGuess();
@@ -474,16 +586,42 @@ public class BuzzwordController implements FileController{
                                                     gameInstance.appendLetter(letter);
                                                     isAddedThisLoop = true;
                                                 }
+                                                workspace.getLetterNodes().get(i).get(j).getChildren().get(0).getStyleClass().clear();
+                                                workspace.getLetterNodes().get(i).get(j).getChildren().get(1).getStyleClass().clear();
+                                                workspace.getLetterNodes().get(i).get(j).getChildren().get(0).getStyleClass()
+                                                        .add("node-selected");
+                                                workspace.getLetterNodes().get(i).get(j).getChildren().get(1).getStyleClass()
+                                                        .add("node-selected-text");
                                                 gameInstance.setFirstTimeTyped(false);
                                                 gameInstance.setFlagCell(i*4 + j);
+                                                lastPos = i*4 + j;
                                                 gameInstance.makeAdjacencyGrid(i*4 + j);
                                                 updateCurrentGuessGUI();
+
                                             }
                                             else if(gameInstance.getAdjacencyCell(i*4 + j)){
                                                 if(!isAddedThisLoop) {
                                                     gameInstance.appendLetter(letter);
                                                     isAddedThisLoop = true;
                                                 }
+                                                try {
+                                                    Coordinate coord = new Coordinate(lastPos, i*4 + j);
+                                                    Integer value = lineMap.get(coord.toString());
+                                                    workspace.getLinePane().getChildren().get(value).getStyleClass().add("line-selected");
+                                                    lastPos = i*4 + j;
+                                                }
+                                                catch(NullPointerException ex){
+                                                    Coordinate coord = new Coordinate(i*4 + j, lastPos);
+                                                    Integer value = lineMap.get(coord.toString());
+                                                    workspace.getLinePane().getChildren().get(value).getStyleClass().add("line-selected");
+                                                    lastPos = i*4 + j;
+                                                }
+                                                workspace.getLetterNodes().get(i).get(j).getChildren().get(0).getStyleClass().clear();
+                                                workspace.getLetterNodes().get(i).get(j).getChildren().get(1).getStyleClass().clear();
+                                                workspace.getLetterNodes().get(i).get(j).getChildren().get(0).getStyleClass()
+                                                        .add("node-selected");
+                                                workspace.getLetterNodes().get(i).get(j).getChildren().get(1).getStyleClass()
+                                                        .add("node-selected-text");
                                                 gameInstance.setFirstTimeTyped(false);
                                                 gameInstance.setFlagCell(i*4 + j);
                                                 gameInstance.makeAdjacencyGrid(i*4 + j);
@@ -518,8 +656,13 @@ public class BuzzwordController implements FileController{
 
         if(won) {
             //update gameData
-            messageDialog.show(propertyManager.getPropertyValue(GAME_RESULT_TITLE),
-                    propertyManager.getPropertyValue(GAME_WIN_MESSAGE));
+            try {
+                messageDialog.show(propertyManager.getPropertyValue(GAME_RESULT_TITLE),
+                        propertyManager.getPropertyValue(GAME_WIN_MESSAGE));
+            }
+            catch(Exception e){
+
+            }
 
             for(int i = 0; i < gameData.getProfile().getGameModes().size(); i++){
                 if(gameData.getProfile().getGameModes().get(i).equals(gameInstance.getGameModeSelected())){
@@ -545,8 +688,13 @@ public class BuzzwordController implements FileController{
             String words = " The words were:\n";
             for(int i = 0; i < gameInstance.getGuaranteedWords().size(); i++)
                 words += gameInstance.getGuaranteedWords().get(i) + "\n";
-            messageDialog.show(propertyManager.getPropertyValue(GAME_RESULT_TITLE),
-                    propertyManager.getPropertyValue(GAME_LOSE_MESSAGE) + words);
+            try {
+                messageDialog.show(propertyManager.getPropertyValue(GAME_RESULT_TITLE),
+                        propertyManager.getPropertyValue(GAME_LOSE_MESSAGE) + words);
+            }
+            catch(Exception e){
+
+            }
         }
     }
 

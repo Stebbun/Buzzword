@@ -304,28 +304,28 @@ public class GameInstance {
         //use last flagged cell position and everything around that position will be a valid adjacency
         adjacencyGrid = new boolean[4][4];
         //pos + 1
-        if(pos + 1 >= 0 && pos + 1 <= 15)
+        if(pos + 1 >= 0 && pos + 1 <= 15 && pos % 4 != 3)
             setAdjacencyCell(pos + 1);
         //pos - 1
-        if((pos - 1) >= 0 && (pos - 1) <= 15)
+        if((pos - 1) >= 0 && (pos - 1) <= 15 && pos % 4 != 0)
             setAdjacencyCell(pos - 1);
         //pos - 4
         if(pos - 4 >= 0 && pos - 4 <= 15)
             setAdjacencyCell(pos - 4);
         //pos - 3
-        if(pos - 3 >= 0 && pos - 3 <= 15)
+        if(pos - 3 >= 0 && pos - 3 <= 15 && pos % 4 != 3 && pos % 4 != 0)
             setAdjacencyCell(pos - 3);
         //pos - 5
-        if(pos - 5 >= 0 && pos - 5 <= 15)
+        if(pos - 5 >= 0 && pos - 5 <= 15 && pos % 4 != 0)
             setAdjacencyCell(pos - 5);
         //pos + 4
         if(pos + 4 >= 0 && pos + 4 <= 15)
             setAdjacencyCell(pos + 4);
         //pos + 3
-        if(pos + 3 >= 0 && pos + 3 <= 15)
+        if(pos + 3 >= 0 && pos + 3 <= 15 && (pos % 4) != 0)
             setAdjacencyCell(pos + 3);
         //pos + 5
-        if(pos + 5 >= 0 && pos + 5 <= 15)
+        if(pos + 5 >= 0 && pos + 5 <= 15 && pos % 4 != 3)
             setAdjacencyCell(pos + 5);
     }
 
