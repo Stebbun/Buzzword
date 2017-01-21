@@ -85,14 +85,14 @@ public class GameInstance {
                 e.printStackTrace();
             }
         }
-        else if(gameModeSelected.getCategory().equals("Fruits and Veggies")){
+        else if(gameModeSelected.getCategory().equals("Fruits and Vegetables")){
             try {
                 InputStream is = Profile.class.getResourceAsStream("/initialdata/valid-fruitsveggies.txt");
                 BufferedReader br = new BufferedReader(new InputStreamReader(is));
                 String words = br.readLine();
                 String[] wordArray = words.split(" ");
                 for (int i = 0; i < wordArray.length; i++)
-                    validWords.add(wordArray[i]);
+                    validWords.add(wordArray[i].toUpperCase());
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -105,7 +105,7 @@ public class GameInstance {
                 String words = br.readLine();
                 String[] wordArray = words.split(" ");
                 for (int i = 0; i < wordArray.length; i++)
-                    validWords.add(wordArray[i]);
+                    validWords.add(wordArray[i].toUpperCase());
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -313,7 +313,7 @@ public class GameInstance {
         if(pos - 4 >= 0 && pos - 4 <= 15)
             setAdjacencyCell(pos - 4);
         //pos - 3
-        if(pos - 3 >= 0 && pos - 3 <= 15 && pos % 4 != 3 && pos % 4 != 0)
+        if(pos - 3 >= 0 && pos - 3 <= 15 && pos % 4 != 3)
             setAdjacencyCell(pos - 3);
         //pos - 5
         if(pos - 5 >= 0 && pos - 5 <= 15 && pos % 4 != 0)
